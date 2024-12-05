@@ -1,0 +1,46 @@
+{
+  "users": [
+    {
+      "email": "olivier@mail.com",
+      "password": "$2a$10$5mxjcEvIvwR9rhPCBDcKQuCRXMMxS9q4Bft4CFTIQST33cQpBICPC",
+      "firstname": "Olivier",
+      "lastname": "Monge",
+      "age": 32,
+      "id": 1
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "title": "a title",
+      "views": 100
+    },
+    {
+      "id": 2,
+      "title": "another title",
+      "views": 200
+    },
+    {
+      "text": "123123",
+      "postId": "123123",
+      "id": 3
+    },
+    {
+      "text": "1231234",
+      "postId": "1231234",
+      "id": 4
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "text": "a comment about post 1",
+      "postId": "1"
+    },
+    {
+      "id": 2,
+      "text": "another comment about post 1",
+      "postId": "1"
+    }
+  ]
+}
