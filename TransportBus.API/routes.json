@@ -1,4 +1,4 @@
 {
-    "/posts*": "/664/posts$1",
-    "/comments*": "/664/comments$1"
+    "/stops*": "/664/stops$1",
+    "/routes*": "/664/routes$1"
 }
