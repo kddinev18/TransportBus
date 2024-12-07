@@ -31,11 +31,11 @@ export default {
 </script>
 
 <template>
-    <div class="tw-grid tw-grid-cols-5 tw-h-screen tw-bg-background">
-    <div class="tw-bg-primary tw-col-span-3"></div>
-        <div class="tw-bg-background tw-col-span-2 tw-flex tw-flex-col tw-justify-center tw-items-center">
-            <div class="tw-w-3/4 tw-max-w-md">
-                <h1 class="tw-text-3xl tw-mb-6 tw-font-bold tw-text-primary">
+    <div class="grid grid-cols-5 h-screen bg-background">
+    <div class="bg-primary col-span-3"></div>
+        <div class="bg-background col-span-2 flex flex-col justify-center items-center">
+            <div class="w-3/4 max-w-md">
+                <h1 class="text-3xl mb-6 font-bold text-primary">
                 {{ $t('auth.logIn.logIn') }}
                 </h1>
                 <v-text-field
@@ -50,17 +50,17 @@ export default {
                     :label="$t('auth.logIn.password')"
                     type="password">
                 </v-text-field>
-                <div class="tw-flex tw-justify-between">
+                <div class="flex justify-between">
                     <v-checkbox 
                         :label="$t('auth.logIn.rememberMe')" 
                         color="primary">
                     </v-checkbox>
-                    <a class="tw-text-accent tw-mt-4 hover:tw-underline">
+                    <a class="text-accent mt-4 hover:underline">
                         {{ $t('auth.logIn.forgotPassword') }}
                     </a>
                 </div>
                 <v-btn
-                    class="tw-mt-6"
+                    class="mt-6"
                     color="primary"
                     block
                     @click="logIn">
