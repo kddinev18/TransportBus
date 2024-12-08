@@ -32,7 +32,9 @@ export default {
 
 <template>
     <div class="grid grid-cols-5 h-screen bg-background">
-    <div class="bg-primary col-span-3"></div>
+        <div class="bg-primary col-span-3">
+            <img src="https://openmaptiles.org/img/map-cards-img/Topo.png" class="w-full h-full object-cover"/>
+        </div>
         <div class="bg-background col-span-2 flex flex-col justify-center items-center">
             <div class="w-3/4 max-w-md">
                 <h1 class="text-3xl mb-6 font-bold text-primary">

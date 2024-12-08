@@ -6,7 +6,7 @@
         </RouterLink>
         <ul class="space-y-2 font-medium">
             <li>
-                <RouterLink to="/about"
+                <RouterLink to="about"
                     class="cursor-pointer flex items-center p-2 rounded-lg hover:bg-accent group">
                     <v-icon color="background" icon="mdi-map" size="large"></v-icon>
                     <span class="ms-3 select-none">{{ $t('navigation.map') }}</span>

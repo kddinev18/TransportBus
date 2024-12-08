@@ -9,6 +9,8 @@ import router from './router'
 
 loadFonts()
 
+console.log(process.env.VUE_APP_GOOGLE_MAPS_API_KEY);
+
 createApp(App)
   .use(i18n)
   .use(router)

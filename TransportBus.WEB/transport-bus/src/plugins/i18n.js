@@ -1,5 +1,5 @@
 import { createI18n } from 'vue-i18n';
-import authRes from '../modules/authentication/resources.js';
+import authRes from '../core/utils/resources.js';
 
 const validationResourcesBg = {
   required: 'Полето е задължително',
