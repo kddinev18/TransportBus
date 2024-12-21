@@ -1,15 +1,18 @@
 <script>
-import { GoogleMap, Polyline  } from 'vue3-google-map'
+import { GoogleMap, Polyline, Circle } from 'vue3-google-map'
 import { Secrets } from '../../../core/utils/secrets';
 import { decode } from '@mapbox/polyline';
+import { useStopsStore } from '../../../core/stores/stopsStore'
 
 export default {
     components: {
         GoogleMap,
-        Polyline
+        Polyline,
+        Circle
     },
     data() {
         return {
+            stopsStore: useStopsStore(),
             apiKey: '',
             restrictions: {
                 clickableIcons: false,
@@ -17,7 +20,7 @@ export default {
                 mapId: '21982fcaf227d4c8',
                 minZoom: 12,
                 maxZoom: 21,
-                startZoom: 13,
+                zoom: 13,
                 center: { lat: 42.485444, lng: 27.448780 },
                 bounds: {
                     latLngBounds:
@@ -30,25 +33,60 @@ export default {
                     strictBounds: true
                 }
             },
-            testLine:
-                {
-                    path: undefined,
-                    geodesic: true,
-                    strokeColor: '#FF0000',
-                    strokeOpacity: 1.0,
-                    strokeWeight: 2,
-                }
+            lines: [],
+            stops: [],
         }
     },
+    props: {
+        routes: Array
+    },
     beforeMount() {
-        let stringPath = 'qmqbGc}qfDNFh@CgBiHoBoH]{AgA{EGUtBW??DAzCi@`Ds@TMbD}D??hCkDlFzDf@^hC`C??lCpCvCbEPLvCuKp@oBVi@TWlAiBNPHHbAdA??`HvHdBpBdB`BTTX^Rf@Rp@Vx@X|@?\\DZLZRTVNL@XAVKTSPe@Nw@DMLQdCyBdDyC|@{@??nCcCrD_DjBgBzCoCrC}BFAlDwClB}AzEmC~@]LMjA]??|GkBpGmB~EmAR@bCm@`@Kp@pETrB?@f@lEEd@BRnFqAHKnCm@tEmAfD{@tJgCbCs@hC}@hCw@??tAg@fCy@RKx@s@^]|D}AzBaATIFuBAmDOqJAe@tB?\\AF?Eh@?bD?cDDi@G?]@uB?@d@FtFFzB@lDGtB?t@NlA\\xCfAlHlAdILzBGfBs@dIGNQ~@qBhKKj@a@xAM`A?t@j@jF|@vHl@lFb@zFBzBIx@Op@Ib@?@eAjBm@hAwA~BeCxDuAjCw@pAs@nAMV^b@rAfBbExEjIhJtYv\\~I~JfEjEnBfBhCtBjChB`DjBz@d@PJzAl@vAf@hBf@tA^bCb@`AHr@\\v@FpGR~DTJJZRTF`@DZ?ZR^\\Xp@H^RdDf@rJPxD?Ft@jOTtBl@hCj@zA\\t@b@v@p@|@x@`AtAhA~FzDx@h@t@v@hA|A\\l@t@`Bd@zA`@pBRbBTzC`A`JTnBRfAVnA`@xA`AfClAxB`FnGpA~A~@o@\\Sp@IpDE??pDE\\AnA_@b@UpCoB|BaBrDsC??lA_AfH_FpLkI??hKqHf@zAd@n@ZX~@b@z@Zn@Zf@t@';
-        this.testLine.path = decode(stringPath).map((point) => {
-            return {
-                lat: point[0],
-                lng: point[1]
-            };
-        });
         this.apiKey = Secrets.getGoogleMapsApiKey();
+    },
+    methods:
+    {
+        init()
+        {
+            for (let route of this.routes) {
+                let path = decode(route.path).map((point) => {
+                    return {
+                        lat: point[0],
+                        lng: point[1]
+                    };
+                });
+                console.log('path: ', path);
+                this.lines.push({
+                    id: route.id,
+                    name: route.longName,
+                    code: route.shortName,
+                    path: path,
+                    geodesic: true,
+                    strokeColor: route.color,
+                    strokeOpacity: 1.0,
+                    strokeWeight: 2,
+                });
+                let stops = this.stopsStore.getStopsByIds(route.stops);
+                console.log('stops: ', stops);
+                for (let stop of stops) {
+                    this.stops.push({
+                        id: stop.id,
+                        center: { lat: stop.latitude, lng: stop.longitude },
+                        radius: 70,
+                        strokeColor: route.color,
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2,
+                        fillColor: '#000000',
+                        fillOpacity: 0.35
+                    });
+                }
+                console.log('stops: ', this.stops);
+            }
+        }
+    },
+    watch: {
+        'restrictions.zoom'(newZoom, oldZoom) {
+            console.log(`Zoom changed from ${oldZoom} to ${newZoom}`);
+        }
     }
 }
 </script>
@@ -58,7 +96,7 @@ export default {
         :api-key="apiKey" 
         :center="restrictions.center"
         :map-id="restrictions.mapId"
-        :zoom="restrictions.startZoom"
+        v-model:zoom="restrictions.zoom"
         :clickableIcons="restrictions.clickableIcons" 
         :disable-default-ui="restrictions.disableDefaultUI"
         :min-zoom="restrictions.minZoom"
@@ -66,6 +104,7 @@ export default {
         :restriction="restrictions.bounds"
         class="h-screen w-full"
         >
-        <Polyline :options="testLine" />
+        <Circle v-for="stop in stops" :options="stop" :key="`stop-${stop.id}`" />
+        <Polyline v-for="line in lines" :options="line" :key="`route-${line.id}`" />
     </GoogleMap>
 </template>
