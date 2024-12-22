@@ -1,5 +1,6 @@
 import { createI18n } from 'vue-i18n';
 import authRes from '../core/utils/resources.js';
+import publicRes from '../modules/public/utils/resources.js';
 
 const validationResourcesBg = {
   required: 'Полето е задължително',
@@ -16,12 +17,14 @@ const i18n = createI18n({
     en:
     {
       validation: validationResourcesEn,
-      auth: authRes.en
+      auth: authRes.en,
+      public: publicRes.en
     },
     bg:
     {
       validation: validationResourcesBg,
-      auth: authRes.bg
+      auth: authRes.bg,
+      public: publicRes.bg
     }
   }
 });

@@ -1,17 +1,16 @@
 <script>
 import TransportMap from '../components/TransportMap.vue'
+import AppLoader from '../../../core/components/AppLoader.vue';
 import { useStopsStore } from '../../../core/stores/stopsStore'
-import Loading from 'vue-loading-overlay';
-
 export default {
     components: {
         TransportMap,
-        Loading
+        AppLoader
     },
     data() {
         return {
             stopsStore: useStopsStore(),
-            hasData: false,
+            isLoading: true,
             routes: [
                 {
                     path: 'olbbG{djfDb@dCZOtBgAa@{@m@_Ao@[{@[_Ac@[Ye@o@g@{AMc@mJ~G??mM~IcHhFi@\\??wEhDmGzEiBj@a@DkCJ??mD@iADYHYNw@d@aCwCoCoDc@m@kAyBq@gBw@{CSiAWgC{@qIa@eEa@eCWiAg@sA_@u@Uc@w@qA{AcBoDeCoCeBqBiBc@g@s@eA[k@_@}@a@oAk@kCUmBE}@HgE?eBMuCaA}J??c@qEU}CQuCCMFKBIHm@@e@G_@Wi@MOWM{@Om@@]HUNMJMVCJONYNyCJoB?wBIeDQU@UFs@MsBa@qAa@cA[_A[y@[mCsAgEkCgCiBeGuFqHeIyH}IePaRsK}LgFgGaBoBM{@AcA?YZi@pBsDrD{FjAsB~@cBNY??@CxAgBmF}f@|A{GbB}I|@}LSqC_EsY@i@DcHrA[LODS@eA??VOYGBwFcC@NtKAzFIj@{h@rR??_FlAaCp@_Cj@oCl@OC_B^}Bh@Ia@QqBQoAYaCa@oCU}AeDdAMLmBd@{EpA_ElAuCv@??{DfAOC_@Hs@Vo@T}At@y@`@yBrA{AjAyAtAyAjB{CjCiBvA{@v@oC~Bc@^oCvB??}KvHEDGC[GO?o@c@[MWQsAyA}EiF_AeA??mImJiA~ASj@Gd@m@zA[|@wCtKeBuBcA{AaCcCoCiC??}BcByBcBc@YONqAjB{AjB??oB`CULaDr@{Ch@}@LA?{@JFTfAzE\\zAnBnHJh@KL',
@@ -71,25 +70,15 @@ export default {
             ]
         }
     },
-    computed: {
-        IsBusy() {
-            return !this.hasData;
-        }
-    },
-    async created() {
+    async mounted() {
         await this.stopsStore.fetchStops();
-        this.hasData = true;
+        this.isLoading = false;
         this.$refs.map.init();
     }
 }
 </script>
 
 <template>
-    <Loading 
-        :active="true" 
-        v-if="isLoading"
-        :can-cancel="false" 
-        class="flex flex-row min-h-screen justify-center items-center"
-        :is-full-page="true" />
-    <TransportMap :routes="routes" v-else ref="map"/>
+    <AppLoader :isLoading="isLoading"/>
+    <TransportMap :routes="routes" ref="map"/>
 </template>

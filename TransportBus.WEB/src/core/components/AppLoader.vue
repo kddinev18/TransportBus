@@ -15,7 +15,10 @@ export default {
 </script>
 
 <template>
-    <Loading :active="isLoading"
-             :can-cancel="false"
-             :is-full-page="true"/>
+    <Loading 
+        :active="true" 
+        v-if="isLoading"
+        :can-cancel="false" 
+        class="flex flex-row min-h-screen justify-center items-center"
+        :is-full-page="true" />
 </template>

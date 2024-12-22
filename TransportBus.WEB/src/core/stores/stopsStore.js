@@ -9,8 +9,7 @@ export const useStopsStore = defineStore("stops", {
   },
   actions: {
     async fetchStops() {
-      let service = new BusDataService();
-      let reponse = await service.getStops();
+      let reponse = await BusDataService.getStops();
       console.log("response: ", reponse);
       if(reponse.status == 200)
       {
@@ -18,8 +17,7 @@ export const useStopsStore = defineStore("stops", {
       }
     },
     async addStop(stopData) {
-      let service = new BusDataService();
-      let reponse = await service.addStop(stopData);
+      let reponse = await BusDataService.addStop(stopData);
       console.log("response: ", reponse);
       if(reponse.status == 200) {
         this.stops.push(stopData);
@@ -28,8 +26,7 @@ export const useStopsStore = defineStore("stops", {
     async updateStop(id, updatedData) {
       const stop = this.stops.find((s) => s.id === id);
       if (stop) {
-        let service = new BusDataService();
-        let reponse = await service.addStop(stop.id, updatedData);
+        let reponse = await BusDataService.addStop(stop.id, updatedData);
         console.log("response: ", reponse);
         if(reponse.status == 200) {
             stop.name = updatedData.name;
@@ -42,8 +39,7 @@ export const useStopsStore = defineStore("stops", {
     async removeStop(id) {
       const stop = this.stops.find((s) => s.id === id);
       if (stop) {
-        let service = new BusDataService();
-        let reponse = await service.deleteStop(id);
+        let reponse = await BusDataService.deleteStop(id);
         console.log("response: ", reponse);
         if(reponse.status == 200) {
             this.stops = this.stops.filter((s) => s.id !== id);

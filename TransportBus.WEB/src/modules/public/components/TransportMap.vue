@@ -1,14 +1,21 @@
 <script>
-import { GoogleMap, Polyline, Circle } from 'vue3-google-map'
+import { GoogleMap, Polyline, Circle, Marker } from 'vue3-google-map';
 import { Secrets } from '../../../core/utils/secrets';
 import { decode } from '@mapbox/polyline';
-import { useStopsStore } from '../../../core/stores/stopsStore'
-
+import { useStopsStore } from '../../../core/stores/stopsStore';
+import MapTools from './MapTools.vue';
+import NavigationSidePanel from './NavigationSidePanel.vue';
 export default {
     components: {
         GoogleMap,
         Polyline,
-        Circle
+        Circle,
+        MapTools,
+        NavigationSidePanel,
+        Marker
+    },
+    beforeMount() {
+        this.apiKey = Secrets.getGoogleMapsApiKey();
     },
     data() {
         return {
@@ -18,35 +25,69 @@ export default {
                 clickableIcons: false,
                 disableDefaultUI: true,
                 mapId: '21982fcaf227d4c8',
-                minZoom: 12,
+                minZoom: 13,
                 maxZoom: 21,
                 zoom: 13,
                 center: { lat: 42.485444, lng: 27.448780 },
                 bounds: {
                     latLngBounds:
                     {
-                        north: 42.485444,
-                        south: 42.485444,
-                        east: 27.448780,
-                        west: 27.448780
+                        north: 42.755744,
+                        south: 42.215144,
+                        east: 27.794780,
+                        west: 27.102780
                     },
-                    strictBounds: true
+                    strictBounds: false
                 }
             },
+            mapMode: 'none',
             lines: [],
             stops: [],
+            markers: [],
         }
     },
     props: {
         routes: Array
     },
-    beforeMount() {
-        this.apiKey = Secrets.getGoogleMapsApiKey();
-    },
     methods:
     {
-        init()
-        {
+        mapClicked(lat, lng) {
+            console.log('map clicked: ', lat(), lng());
+            if(this.mapMode == 'nav') {
+                console.log('nav mode');
+                this.setMarker(lat(), lng());
+                return;
+            }
+        },
+        setMarker(lat, lng) {
+            if(this.markers.length > 1) {
+                return;
+            }
+            console.log('set marker: ', lat, lng);
+            if (this.markers.some(item => item.id == 'from')) {
+                this.markers.push({
+                    id: 'to',
+                    position: { lat: lat, lng: lng },
+                    label: 'T',
+                    title: 'To'
+                });
+                console.log('markers: ', this.markers);
+            }
+            else {
+                this.markers.push({
+                    id: 'from',
+                    position: { lat: lat, lng: lng },
+                    label: 'F',
+                    title: 'From'
+                });
+                console.log('markers: ', this.markers);
+            }
+        },
+        changeMode(mode) {
+            console.log('mode: ', mode);
+            this.mapMode = mode;
+        },
+        init() {
             for (let route of this.routes) {
                 let path = decode(route.path).map((point) => {
                     return {
@@ -63,7 +104,7 @@ export default {
                     geodesic: true,
                     strokeColor: route.color,
                     strokeOpacity: 1.0,
-                    strokeWeight: 2,
+                    strokeWeight: 3,
                 });
                 let stops = this.stopsStore.getStopsByIds(route.stops);
                 console.log('stops: ', stops);
@@ -71,40 +112,46 @@ export default {
                     this.stops.push({
                         id: stop.id,
                         center: { lat: stop.latitude, lng: stop.longitude },
-                        radius: 70,
+                        radius: 27,
                         strokeColor: route.color,
-                        strokeOpacity: 0.8,
+                        strokeOpacity: 1,
                         strokeWeight: 2,
-                        fillColor: '#000000',
-                        fillOpacity: 0.35
+                        fillColor: route.color,
+                        fillOpacity: 0.5
                     });
                 }
                 console.log('stops: ', this.stops);
             }
-        }
-    },
-    watch: {
-        'restrictions.zoom'(newZoom, oldZoom) {
-            console.log(`Zoom changed from ${oldZoom} to ${newZoom}`);
         }
     }
 }
 </script>
 
 <template>
-    <GoogleMap 
-        :api-key="apiKey" 
-        :center="restrictions.center"
-        :map-id="restrictions.mapId"
-        v-model:zoom="restrictions.zoom"
-        :clickableIcons="restrictions.clickableIcons" 
-        :disable-default-ui="restrictions.disableDefaultUI"
-        :min-zoom="restrictions.minZoom"
-        :max-zoom="restrictions.maxZoom"
-        :restriction="restrictions.bounds"
-        class="h-screen w-full"
-        >
-        <Circle v-for="stop in stops" :options="stop" :key="`stop-${stop.id}`" />
-        <Polyline v-for="line in lines" :options="line" :key="`route-${line.id}`" />
-    </GoogleMap>
+    <div class="relative h-screen w-full">
+        <MapTools @mode-changed="changeMode" default-mode="none" :modes="[
+            {
+                mode: 'nav',
+                icon: 'mdi-navigation'
+            },
+            {
+                mode: 'bus',
+                icon: 'mdi-bus'
+            },
+            {
+                mode: 'none',
+                icon: 'mdi-hand'
+            }
+        ]" />
+        <NavigationSidePanel v-model:markers="markers" />
+        <GoogleMap :api-key="apiKey" :center="restrictions.center" :map-id="restrictions.mapId"
+            :zoom="restrictions.zoom" :clickableIcons="restrictions.clickableIcons"
+            :disable-default-ui="restrictions.disableDefaultUI" :min-zoom="restrictions.minZoom"
+            :max-zoom="restrictions.maxZoom" :restriction="restrictions.bounds" class="h-screen w-full"
+            @click="mapClicked($event.latLng.lat, $event.latLng.lng)">
+            <Circle v-for="stop in stops" :options="stop" :key="`stop-${stop.id}`" />
+            <Polyline v-for="line in lines" :options="line" :key="`route-${line.id}`" />
+            <Marker v-for="marker in markers" :options="marker" :key="`marker-${marker.label}`" />
+        </GoogleMap>
+    </div>
 </template>

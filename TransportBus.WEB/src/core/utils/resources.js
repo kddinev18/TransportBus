@@ -1,4 +1,3 @@
-
 const authenticationResourcesBg = {
     logIn:{
         logIn: 'Вход',
