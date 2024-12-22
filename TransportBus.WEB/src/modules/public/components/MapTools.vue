@@ -27,9 +27,9 @@ export default {
         <div class="inline-flex rounded-md shadow-sm" role="group">
             <button v-for="(mode, index) in modes" type="button"
                 class="px-4 py-2 text-sm font-medium bg-white border border-gray-200 hover:bg-gray-200" :class="[
-                    currentMode === mode.mode ? 'z-10 ring-2 ring-blue-700' : '',
-                    index === 0 ? 'rounded-l' : '',
-                    index === modes.length - 1 ? 'rounded-r' : ''
+                    currentMode == mode.mode ? 'z-10 ring-2 ring-blue-700' : '',
+                    index == 0 ? 'rounded-l' : '',
+                    index == modes.length - 1 ? 'rounded-r' : ''
                 ]" @click="changeMode(mode.mode)" :key="`mapOption-${mode.mode}`">
                 <v-icon color="text" :icon="mode.icon" size="large"></v-icon>
             </button>

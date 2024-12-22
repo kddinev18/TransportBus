@@ -2,12 +2,12 @@ import { createI18n } from 'vue-i18n';
 import authRes from '../core/utils/resources.js';
 import publicRes from '../modules/public/utils/resources.js';
 
-const validationResourcesBg = {
-  required: 'Полето е задължително',
+const commonResourcesBg = {
+  minutesShort: 'мин',
 }
 
-const validationResourcesEn = {
-  required: 'Field is required',
+const commonResourcesEn = {
+  minutesShort: 'min',
 }
 
 const i18n = createI18n({
@@ -16,13 +16,13 @@ const i18n = createI18n({
   messages: {
     en:
     {
-      validation: validationResourcesEn,
+      validation: commonResourcesEn,
       auth: authRes.en,
       public: publicRes.en
     },
     bg:
     {
-      validation: validationResourcesBg,
+      common: commonResourcesBg,
       auth: authRes.bg,
       public: publicRes.bg
     }

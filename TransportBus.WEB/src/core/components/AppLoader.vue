@@ -8,7 +8,7 @@ export default {
     {
         isLoading:{
             type: Boolean,
-            default: false
+            default: true
         }
     }
 }
@@ -19,6 +19,7 @@ export default {
         :active="true" 
         v-if="isLoading"
         :can-cancel="false" 
-        class="flex flex-row min-h-screen justify-center items-center"
+        color="#2596be"
+        class="flex flex-row h-full w-full justify-center items-center"
         :is-full-page="true" />
 </template>
