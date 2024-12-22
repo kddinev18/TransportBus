@@ -71,6 +71,7 @@ export default {
         }
     },
     async mounted() {
+        console.log('mounted');
         await this.stopsStore.fetchStops();
         this.isLoading = false;
         this.$refs.map.init();

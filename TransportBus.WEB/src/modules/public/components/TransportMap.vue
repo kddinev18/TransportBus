@@ -43,7 +43,19 @@ export default {
             mapMode: 'none',
             lines: [],
             stops: [],
-            markers: [],
+            fromMaker: null,
+            toMarker: null,
+        }
+    },
+    computed: {
+        isFromMarkerVisible() {
+            return this.fromMaker != null;
+        },
+        isToMarkerVisible() {
+            return this.toMarker != null;
+        },
+        isNavigationPannelVisible() {
+            return this.mapMode == 'nav';
         }
     },
     props: {
@@ -60,27 +72,23 @@ export default {
             }
         },
         setMarker(lat, lng) {
-            if(this.markers.length > 1) {
-                return;
-            }
-            console.log('set marker: ', lat, lng);
-            if (this.markers.some(item => item.id == 'from')) {
-                this.markers.push({
-                    id: 'to',
-                    position: { lat: lat, lng: lng },
-                    label: 'T',
-                    title: 'To'
-                });
-                console.log('markers: ', this.markers);
-            }
-            else {
-                this.markers.push({
+            if(this.fromMaker == null) {
+                this.fromMaker = {
                     id: 'from',
                     position: { lat: lat, lng: lng },
                     label: 'F',
                     title: 'From'
-                });
-                console.log('markers: ', this.markers);
+                };
+                return;
+            }
+            if(this.toMarker == null) {
+                this.toMarker = {
+                    id: 'to',
+                    position: { lat: lat, lng: lng },
+                    label: 'T',
+                    title: 'To'
+                };
+                return;
             }
         },
         changeMode(mode) {
@@ -143,7 +151,7 @@ export default {
                 icon: 'mdi-hand'
             }
         ]" />
-        <NavigationSidePanel v-model:markers="markers" />
+        <NavigationSidePanel v-if="isNavigationPannelVisible" v-model:to-marker="toMarker" v-model:from-marker="fromMaker" />
         <GoogleMap :api-key="apiKey" :center="restrictions.center" :map-id="restrictions.mapId"
             :zoom="restrictions.zoom" :clickableIcons="restrictions.clickableIcons"
             :disable-default-ui="restrictions.disableDefaultUI" :min-zoom="restrictions.minZoom"
@@ -151,7 +159,8 @@ export default {
             @click="mapClicked($event.latLng.lat, $event.latLng.lng)">
             <Circle v-for="stop in stops" :options="stop" :key="`stop-${stop.id}`" />
             <Polyline v-for="line in lines" :options="line" :key="`route-${line.id}`" />
-            <Marker v-for="marker in markers" :options="marker" :key="`marker-${marker.label}`" />
+            <Marker v-if="isFromMarkerVisible != undefined" :options="fromMaker" />
+            <Marker v-if="isToMarkerVisible != undefined" :options="toMarker" />
         </GoogleMap>
     </div>
 </template>
