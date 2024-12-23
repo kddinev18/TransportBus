@@ -13,7 +13,7 @@ export default class BusNavigationService {
                     lat: to.lat,
                     lon: to.lng
                 },
-                maxWalkDistance: 1200,
+                maxWalkDistance: 12000,
                 walkingSpeed:1
             }
         );

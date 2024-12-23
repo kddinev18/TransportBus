@@ -1,8 +1,19 @@
 <script>
+import RouteButtonExpandionPannel from './RouteButtonExpandionPannel.vue';
 export default {
+    components: {
+        RouteButtonExpandionPannel
+    },
+    data() {
+        return {
+            isExpanded: false
+        }
+    },
     props:
     {
-        route: Object
+        route: Object,
+        index: Number,
+        currentChosenIndex: Number
     },
     methods:
     {
@@ -22,15 +33,26 @@ export default {
             return `${Math.floor(totalSeconds / 60)} ${this.$t('common.minutesShort')}`;
         },
         routePicked() {
-            this.$emit('routePicked', this.route);
+            this.isExpanded = !this.isExpanded;
+            this.$emit('routePicked', this.route, this.index);
         }
     },
-    emits: ['routePicked']
+    emits: ['routePicked'],
+    watch: {
+        currentChosenIndex:
+        { 
+            handler(newValue) {
+                if (newValue != this.index) {
+                    this.isExpanded = false;
+                }
+            }
+        }
+    }
 }
 </script>
 
 <template>
-    <button class="p-4 bg-primary shadow-md rounded-lg mb-4 w-full" @click="routePicked(route)">
+    <div class="p-4 bg-primary shadow-md rounded-lg w-full" :class="[isExpanded ? '' : 'mb-4']" @click="routePicked(route)">
         <div class="grid grid-cols-2 gap-4">
             <div class="flex flex-col items-start">
                 <h1 class="text-mg font-bold text-white">{{ `${getTime(route.startTime)} -
@@ -46,8 +68,9 @@ export default {
                     <v-icon color="background" v-if="leg.mode == 'WALK'" icon="mdi-walk" size="18"></v-icon>
                     <v-icon color="background" v-else icon="mdi-bus" size="18"></v-icon>
                     <div class="flex flex-col items-start ml-2 bg-accent p-2 rounded-lg">
-                        <p v-if="leg.mode == 'WALK'" class="text-sm font-bold text-white">{{ getMinutes(leg.endTime -
-                            leg.startTime) }}</p>
+                        <p v-if="leg.mode == 'WALK'" class="text-sm font-bold text-white">{{
+                            getMinutes(leg.endTime -
+                                leg.startTime) }}</p>
                         <p v-else class="text-sm font-bold text-white">{{ leg.route }}</p>
                     </div>
                 </div>
@@ -55,5 +78,6 @@ export default {
                     size="13"></v-icon>
             </template>
         </div>
-    </button>
+    </div>
+    <RouteButtonExpandionPannel :is-expanded="isExpanded"/>
 </template>
