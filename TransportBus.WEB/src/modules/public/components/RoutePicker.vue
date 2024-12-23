@@ -20,16 +20,21 @@ export default {
         },
         getMinutes(totalSeconds) {
             return `${Math.floor(totalSeconds / 60)} ${this.$t('common.minutesShort')}`;
+        },
+        routePicked(route) {
+            this.$emit('routePicked', route);
         }
-    }
+    },
+    emits: ['routePicked']
 }
 </script>
 
 <template>
     <div class="flex flex-col justify-between border rounded p-4 w-full h-full">
         <div class="overflow-y-auto">
-            <div v-for="(route, index) in routes" :key="`route-${index}`"
-                class="p-4 bg-primary shadow-md rounded-lg mb-4">
+            <button v-for="(route, index) in routes" :key="`route-${index}`"
+                class="p-4 bg-primary shadow-md rounded-lg mb-4 w-full"
+                @click="routePicked(route)">
                 <div class="grid grid-cols-2 gap-4">
                     <div class="flex flex-col items-start">
                         <h1 class="text-mg font-bold text-white">{{ `${getTime(route.startTime)} -
@@ -52,7 +57,7 @@ export default {
                         <v-icon color="background" v-if="index != route.legs.length - 1" icon="mdi-arrow-right-thick" size="13"></v-icon>
                     </template>
                 </div>
-            </div>
+            </button>
         </div>
     </div>
 </template>

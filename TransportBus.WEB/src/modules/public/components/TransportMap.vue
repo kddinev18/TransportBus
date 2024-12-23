@@ -92,43 +92,33 @@ export default {
             }
         },
         changeMode(mode) {
+            this.lines = [];
+            this.stops = [];
+            this.fromMaker = null;
+            this.toMarker = null;
             console.log('mode: ', mode);
             this.mapMode = mode;
         },
-        init() {
-            for (let route of this.routes) {
-                let path = decode(route.path).map((point) => {
+        routePicked(route) {
+            for (let i = 0; i < route.legs.length; i++) {
+                let leg = route.legs[i];
+                let path = decode(leg.legGeometry.points).map((point) => {
                     return {
                         lat: point[0],
                         lng: point[1]
                     };
                 });
-                console.log('path: ', path);
+                let color = leg.mode == 'WALK' ? '#000000' : '#FF0000';
                 this.lines.push({
-                    id: route.id,
-                    name: route.longName,
-                    code: route.shortName,
+                    id: i,
+                    name: leg.mode,
+                    code: leg.mode,
                     path: path,
                     geodesic: true,
-                    strokeColor: route.color,
+                    strokeColor: color,
                     strokeOpacity: 1.0,
                     strokeWeight: 3,
                 });
-                let stops = this.stopsStore.getStopsByIds(route.stops);
-                console.log('stops: ', stops);
-                for (let stop of stops) {
-                    this.stops.push({
-                        id: stop.id,
-                        center: { lat: stop.latitude, lng: stop.longitude },
-                        radius: 27,
-                        strokeColor: route.color,
-                        strokeOpacity: 1,
-                        strokeWeight: 2,
-                        fillColor: route.color,
-                        fillOpacity: 0.5
-                    });
-                }
-                console.log('stops: ', this.stops);
             }
         }
     }
@@ -151,7 +141,7 @@ export default {
                 icon: 'mdi-hand'
             }
         ]" />
-        <NavigationSidePanel v-if="isNavigationPannelVisible" v-model:to-marker="toMarker" v-model:from-marker="fromMaker" />
+        <NavigationSidePanel v-if="isNavigationPannelVisible" v-model:to-marker="toMarker" v-model:from-marker="fromMaker" @route-picked="routePicked"/>
         <GoogleMap :api-key="apiKey" :center="restrictions.center" :map-id="restrictions.mapId"
             :zoom="restrictions.zoom" :clickableIcons="restrictions.clickableIcons"
             :disable-default-ui="restrictions.disableDefaultUI" :min-zoom="restrictions.minZoom"
@@ -159,8 +149,8 @@ export default {
             @click="mapClicked($event.latLng.lat, $event.latLng.lng)">
             <Circle v-for="stop in stops" :options="stop" :key="`stop-${stop.id}`" />
             <Polyline v-for="line in lines" :options="line" :key="`route-${line.id}`" />
-            <Marker v-if="isFromMarkerVisible != undefined" :options="fromMaker" />
-            <Marker v-if="isToMarkerVisible != undefined" :options="toMarker" />
+            <Marker v-if="isFromMarkerVisible" :options="fromMaker" />
+            <Marker v-if="isToMarkerVisible" :options="toMarker" />
         </GoogleMap>
     </div>
 </template>

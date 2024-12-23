@@ -19,7 +19,11 @@ export default {
         async navigate() {
             const response = await BusNavigationService.getNavigation(this.fromMarkerLocal.position, this.toMarkerLocal.position);
             console.log(response.data);
-            if (response.data.plan.itineraries.length == 0) {
+            if(response.status != 200) {
+                this.$snackbar.add({
+                    type: 'error',
+                    text: this.$t('public.transportMap.noRoutesFound'),
+                });
                 return;
             }
             this.routes = response.data.plan.itineraries;
