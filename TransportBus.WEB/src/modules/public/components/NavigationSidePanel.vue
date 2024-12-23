@@ -18,7 +18,6 @@ export default {
     methods: {
         async navigate() {
             const response = await BusNavigationService.getNavigation(this.fromMarkerLocal.position, this.toMarkerLocal.position);
-            console.log(response.data);
             if(response.status != 200) {
                 this.$snackbar.add({
                     type: 'error',
@@ -47,7 +46,6 @@ export default {
     watch: {
         fromMarker: {
             handler(newValue) {
-                console.log(newValue);
                 if (newValue) {
                     this.fromMarkerLocal = newValue;
                 }
@@ -55,7 +53,6 @@ export default {
         },
         toMarker: {
             handler(newValue) {
-                console.log(newValue);
                 if (newValue) {
                     this.toMarkerLocal = newValue;
                 }
@@ -63,13 +60,11 @@ export default {
         },
         fromMarkerLocal: {
             handler(newValue) {
-                console.log(newValue);
                 this.$emit('update:fromMarker', newValue);
             }
         },
         toMarkerLocal: {
             handler(newValue) {
-                console.log(newValue);
                 this.$emit('update:toMarker', newValue);
             }
         }

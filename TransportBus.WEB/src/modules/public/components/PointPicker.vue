@@ -41,7 +41,6 @@ export default {
             this.isLoading = true;
 
             const response = await GeoCodeService.getLocation(this.from)
-            console.log(response.data);
             if (response.data.results.length > 0) {
                 let lat = response.data.results[0].geometry.location.lat;
                 let lng = response.data.results[0].geometry.location.lng;
@@ -67,7 +66,6 @@ export default {
             this.isLoading = true;
 
             const response = await GeoCodeService.getLocation(this.to);
-            console.log(response.data);
             if (response.data.results.length > 0) {
                 let lat = response.data.results[0].geometry.location.lat;
                 let lng = response.data.results[0].geometry.location.lng;
@@ -86,11 +84,9 @@ export default {
             this.isLoading = false;
         },
         chooseFromLocation() {
-            console.log('chooseFromLocation');
             this.$emit('update:fromMarker', null);
         },
         chooseToLocation() {
-            console.log('chooseToLocation');
             this.$emit('update:toMarker', null);
         },
         async navigate() {
@@ -115,7 +111,6 @@ export default {
     watch: {
         fromMarker: {
             handler(newValue) {
-                console.log(newValue);
                 if (newValue) {
                     this.isLoading = true;
                     GeoCodeService.getAddress(newValue.position.lat, newValue.position.lng).then((response) => {
@@ -133,7 +128,6 @@ export default {
         },
         toMarker: {
             handler(newValue) {
-                console.log(newValue);
                 if (newValue) {
                     this.isLoading = true;
                     GeoCodeService.getAddress(newValue.position.lat, newValue.position.lng).then((response) => {

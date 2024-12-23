@@ -10,7 +10,6 @@ export const useStopsStore = defineStore("stops", {
   actions: {
     async fetchStops() {
       let reponse = await BusDataService.getStops();
-      console.log("response: ", reponse);
       if(reponse.status == 200)
       {
         this.stops = reponse.data;
