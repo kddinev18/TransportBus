@@ -1,23 +1,18 @@
 <script>
 export default {
-    data() {
-        return {
-            currentMode: undefined
-        }
-    },
     methods: {
         changeMode(mode) {
-            this.currentMode = mode;
-            this.$emit('modeChanged', mode);
+            this.$emit('update:currentMode', mode);
         }
     },
     props: {
+        currentMode: String,
         modes: Array,
         defaultMode: String
     },
-    emits: ['modeChanged'],
+    emits: ['update:currentMode'],
     mounted() {
-        this.currentMode = this.defaultMode;
+        this.$emit('update:currentMode', this.defaultMode);
     }
 }
 </script>

@@ -1,8 +1,8 @@
 <script>
 import { useVuelidate } from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
-import GeoCodeService from '../services/geocodeService.js'
-import AppLoader from '../../../core/components/AppLoader.vue';
+import GeoCodeService from '../../services/geocodeService.js'
+import AppLoader from '../../../../core/components/AppLoader.vue';
 
 export default {
     components: {
@@ -95,6 +95,9 @@ export default {
                 return;
             }
             this.$emit('navigate');
+        },
+        goBack() {
+            this.$emit('navigateBack');
         }
     },
     props: {
@@ -105,9 +108,9 @@ export default {
         toMarker: {
             type: Object,
             default: null,
-        },
+        }
     },
-    emits: ['update:fromMarker', 'update:toMarker', 'navigate'],
+    emits: ['update:fromMarker', 'update:toMarker', 'navigate', 'navigateBack'],
     watch: {
         fromMarker: {
             handler(newValue) {
@@ -119,10 +122,10 @@ export default {
                         this.fromLongitude = newValue.position.lng;
                         this.isLoading = false;
                     })
-                    .catch((error) => {
-                        console.log(error);
-                        this.isLoading = false;
-                    });
+                        .catch((error) => {
+                            console.log(error);
+                            this.isLoading = false;
+                        });
                 }
             }
         },
@@ -136,10 +139,10 @@ export default {
                         this.toLongitude = newValue.position.lng;
                         this.isLoading = false;
                     })
-                    .catch((error) => {
-                        console.log(error);
-                        this.isLoading = false;
-                    });
+                        .catch((error) => {
+                            console.log(error);
+                            this.isLoading = false;
+                        });
                 }
             },
         }
@@ -150,61 +153,62 @@ export default {
 <template>
     <AppLoader v-if="isLoading" />
     <template v-else>
-        <div class="flex flex-col justify-between border rounded p-4 w-full h-full">
-            <div class="overflow-y-auto">
+        <div class="overflow-y-auto">
+            <div class="flex gap-4">
+                <v-btn class="col-span-1" density="comfortable" icon="mdi-arrow-left" @click="goBack"></v-btn>
                 <h1 class="text-3xl mb-6 font-bold text-primary">
                     {{ $t('public.transportMap.navigation.navigation') }}
                 </h1>
-
-                <h1 class="text-2xl mb-4 mt-6 font-bold text-text">
-                    {{ $t('public.transportMap.navigation.fromPoint') }}
-                </h1>
-                <v-text-field :label="$t('public.transportMap.navigation.from')" v-model.trim="from" @blur="v$.from.$touch"
-                    @input="v$.from.$touch" :error-messages="v$.from.$errors.map(e => e.$message)" />
-                <div class="columns-2">
-                    <v-text-field :label="$t('public.transportMap.navigation.latitude')" :disabled="true"
-                        v-model.trim="fromLatitude">
-                    </v-text-field>
-                    <v-text-field :label="$t('public.transportMap.navigation.longitude')" :disabled="true"
-                        v-model.trim="fromLongitude">
-                    </v-text-field>
-                </div>
-                <div class="columns-2">
-                    <v-btn color="primary" block @click="chooseFromLocation">
-                        {{ $t('public.transportMap.navigation.chooseFrom') }}
-                    </v-btn>
-                    <v-btn color="secondary" block @click="lookUpFromAddress">
-                        {{ $t('public.transportMap.navigation.loadFrom') }}
-                    </v-btn>
-                </div>
-
-                <h1 class="text-2xl mb-4 mt-6 font-bold text-text">
-                    {{ $t('public.transportMap.navigation.toPoint') }}
-                </h1>
-                <v-text-field :label="$t('public.transportMap.navigation.to')" v-model.trim="to" @blur="v$.to.$touch"
-                    @input="v$.to.$touch" :error-messages="v$.to.$errors.map(e => e.$message)" />
-                <div class="columns-2">
-                    <v-text-field outline :label="$t('public.transportMap.navigation.latitude')" :disabled="true"
-                        v-model.trim="toLatitude">
-                    </v-text-field>
-                    <v-text-field :label="$t('public.transportMap.navigation.longitude')" :disabled="true"
-                        v-model.trim="toLongitude">
-                    </v-text-field>
-                </div>
-                <div class="columns-2">
-                    <v-btn color="primary" block @click="chooseToLocation">
-                        {{ $t('public.transportMap.navigation.chooseTo') }}
-                    </v-btn>
-                    <v-btn color="secondary" block @click="lookUpТоAddress">
-                        {{ $t('public.transportMap.navigation.loadTo') }}
-                    </v-btn>
-                </div>
             </div>
-            <div>
-                <v-btn color="primary" block @click="navigate">
-                    {{ $t('public.transportMap.navigation.navigate') }}
+
+            <h1 class="text-2xl mb-4 mt-6 font-bold text-text">
+                {{ $t('public.transportMap.navigation.fromPoint') }}
+            </h1>
+            <v-text-field :label="$t('public.transportMap.navigation.from')" v-model.trim="from" @blur="v$.from.$touch"
+                @input="v$.from.$touch" :error-messages="v$.from.$errors.map(e => e.$message)" />
+            <div class="columns-2">
+                <v-text-field :label="$t('public.transportMap.navigation.latitude')" :disabled="true"
+                    v-model.trim="fromLatitude">
+                </v-text-field>
+                <v-text-field :label="$t('public.transportMap.navigation.longitude')" :disabled="true"
+                    v-model.trim="fromLongitude">
+                </v-text-field>
+            </div>
+            <div class="columns-2">
+                <v-btn color="primary" block @click="chooseFromLocation">
+                    {{ $t('public.transportMap.navigation.chooseFrom') }}
+                </v-btn>
+                <v-btn color="secondary" block @click="lookUpFromAddress">
+                    {{ $t('public.transportMap.navigation.loadFrom') }}
                 </v-btn>
             </div>
+
+            <h1 class="text-2xl mb-4 mt-6 font-bold text-text">
+                {{ $t('public.transportMap.navigation.toPoint') }}
+            </h1>
+            <v-text-field :label="$t('public.transportMap.navigation.to')" v-model.trim="to" @blur="v$.to.$touch"
+                @input="v$.to.$touch" :error-messages="v$.to.$errors.map(e => e.$message)" />
+            <div class="columns-2">
+                <v-text-field outline :label="$t('public.transportMap.navigation.latitude')" :disabled="true"
+                    v-model.trim="toLatitude">
+                </v-text-field>
+                <v-text-field :label="$t('public.transportMap.navigation.longitude')" :disabled="true"
+                    v-model.trim="toLongitude">
+                </v-text-field>
+            </div>
+            <div class="columns-2">
+                <v-btn color="primary" block @click="chooseToLocation">
+                    {{ $t('public.transportMap.navigation.chooseTo') }}
+                </v-btn>
+                <v-btn color="secondary" block @click="lookUpТоAddress">
+                    {{ $t('public.transportMap.navigation.loadTo') }}
+                </v-btn>
+            </div>
+        </div>
+        <div>
+            <v-btn color="primary" block @click="navigate">
+                {{ $t('public.transportMap.navigation.navigate') }}
+            </v-btn>
         </div>
     </template>
 </template>

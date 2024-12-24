@@ -1,8 +1,8 @@
 <script>
 import { GoogleMap, Polyline, Circle, Marker } from 'vue3-google-map';
-import { Secrets } from '../../../core/utils/secrets';
+import { Secrets } from '../../../../core/utils/secrets';
 import { decode } from '@mapbox/polyline';
-import { useStopsStore } from '../../../core/stores/stopsStore';
+import { useStopsStore } from '../../../../core/stores/stopsStore';
 export default {
     components: {
         GoogleMap,
@@ -80,6 +80,11 @@ export default {
             this.stops = [];
         },
         routePicked(route) {
+            if(route == null) {
+                this.lines = [];
+                this.stops = [];
+                return;
+            }
             this.stops = [];
             this.lines = [];
             for (let i = 0; i < route.legs.length; i++) {

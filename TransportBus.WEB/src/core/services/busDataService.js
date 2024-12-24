@@ -4,6 +4,16 @@ export class BusDataService {
     static async getRoutes(){
         return await apiService.get('/routes');
     }
+    static async addRoute(routeData){
+        return await apiService.post('/routes', routeData);
+    }
+    static async updateRoute(routeId, routeData){
+        return await apiService.put(`/routes/${routeId}`, routeData);
+    }
+    static async deleteRoute(routeId){
+        return await apiService.delete(`/routes/${routeId}`);
+    }
+    
     static async getStops(){
         return await apiService.get('/stops');
     }

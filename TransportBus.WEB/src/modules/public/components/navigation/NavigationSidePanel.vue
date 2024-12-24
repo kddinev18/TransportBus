@@ -1,7 +1,7 @@
 <script>
 import PointPicker from './PointPicker.vue';
 import RoutePicker from './RoutePicker.vue';
-import BusNavigationService from '../services/busNavigationService.js';
+import BusNavigationService from '../../services/busNavigationService.js';
 export default {
     components: {
         PointPicker,
@@ -18,7 +18,7 @@ export default {
     methods: {
         async navigate() {
             const response = await BusNavigationService.getNavigation(this.fromMarkerLocal.position, this.toMarkerLocal.position);
-            if(response.status != 200) {
+            if (response.status != 200) {
                 this.$snackbar.add({
                     type: 'error',
                     text: this.$t('public.transportMap.navigation.noRoutesFound'),
@@ -30,6 +30,19 @@ export default {
         },
         routePicked(route) {
             this.$emit('routePicked', route);
+        },
+        exitRoutePicker() {
+            this.isNevigateChosen = false;
+            this.$emit('routePicked', null);
+
+            this.fromMarkerLocal = null;
+            this.toMarkerLocal = null;
+
+            this.$emit('update:fromMarker', this.fromMarkerLocal);
+            this.$emit('update:toMarker', this.toMarkerLocal);
+        },
+        exitPointPicker() {
+            this.$emit('navigateBack');
         }
     },
     props: {
@@ -42,7 +55,7 @@ export default {
             default: null,
         },
     },
-    emits: ['update:fromMarker', 'update:toMarker', 'routePicked'],
+    emits: ['update:fromMarker', 'update:toMarker', 'routePicked', 'navigateBack'],
     watch: {
         fromMarker: {
             handler(newValue) {
@@ -74,8 +87,10 @@ export default {
 
 <template>
     <div class="absolute top-4 right-4 bottom-4 transform z-50 p-4 bg-white shadow-md rounded-lg w-1/3">
-        <RoutePicker v-if="isNevigateChosen" :routes="routes" @routePicked="routePicked" />
-        <PointPicker v-else v-model:from-marker="fromMarkerLocal" v-model:to-marker="toMarkerLocal"
-            @navigate="navigate" />
+        <div class="flex flex-col justify-between border rounded p-4 w-full h-full">
+            <RoutePicker v-if="isNevigateChosen" :routes="routes" @routePicked="routePicked" @navigate-back="exitRoutePicker" />
+            <PointPicker v-else v-model:from-marker="fromMarkerLocal" v-model:to-marker="toMarkerLocal"
+                @navigate="navigate" @navigate-back="exitPointPicker"/>
+        </div>
     </div>
 </template>

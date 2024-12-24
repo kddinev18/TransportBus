@@ -34,7 +34,7 @@ export default {
         },
         routePicked() {
             this.isExpanded = !this.isExpanded;
-            this.$emit('routePicked', this.route, this.index);
+            this.$emit('routePicked', { route: this.route, index: this.index} );
         }
     },
     emits: ['routePicked'],
@@ -86,5 +86,5 @@ export default {
             </template>
         </div>
     </div>
-    <RouteButtonExpandionPannel :is-expanded="isExpanded" />
+    <RouteButtonExpandionPannel :is-expanded="isExpanded" :legs="route.legs" />
 </template>

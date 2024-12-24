@@ -1,20 +1,24 @@
 <script>
-import TransportMap from '../components/TransportMap.vue'
+import TransportMap from '../components/map/TransportMap.vue'
 import AppLoader from '../../../core/components/AppLoader.vue';
 import { useStopsStore } from '../../../core/stores/stopsStore';
-import NavigationSidePanel from '../components/NavigationSidePanel.vue';
-import MapTools from '../components/MapTools.vue';
+import { useRoutesStore } from '../../../core/stores/routesStore';
+import NavigationSidePanel from '../components/navigation/NavigationSidePanel.vue';
+import RouteVisualiserSidePannel from '../components/routeVisualisation/RouteVisualiserSidePannel.vue';
+import MapTools from '../components/map/MapTools.vue';
 
 export default {
     components: {
         TransportMap,
         AppLoader,
         NavigationSidePanel,
+        RouteVisualiserSidePannel,
         MapTools
     },
     data() {
         return {
             stopsStore: useStopsStore(),
+            routesStore: useRoutesStore(),
             isLoading: true,
             pickedRoute: null,
             toMarker: null,
@@ -24,6 +28,7 @@ export default {
     },
     async mounted() {
         await this.stopsStore.fetchStops();
+        await this.routesStore.fetchRoutes();
         this.isLoading = false;
     },
     computed: {
@@ -33,6 +38,10 @@ export default {
     },
     methods:
     {
+        changeMode() {
+            this.toMarker = null;
+            this.fromMarker = null;
+        },
         mapClicked(coords) {
             if (this.mapMode == 'nav') {
                 this.setMarker(coords.lat, coords.lng);
@@ -58,13 +67,20 @@ export default {
             }
             console.log('set marker', this.fromMarker, this.toMarker);
         },
-        changeMode(mode) {
-            this.toMarker = null;
-            this.fromMarker = null;
-            this.mapMode = mode;
-        },
         routePicked(route) {
             this.pickedRoute = route;
+        },
+        closeNavigationPannel() {
+            this.mapMode = 'none';
+        }
+    },
+    watch:
+    {
+        mapMode:
+        {
+            handler() {
+                this.changeMode();
+            }
         }
     }
 }
@@ -73,7 +89,7 @@ export default {
 <template>
     <AppLoader :isLoading="isLoading" />
     <MapTools 
-        @mode-changed="changeMode" 
+        v-model:currentMode="mapMode" 
         default-mode="none" 
         :modes="[
             {
@@ -93,7 +109,9 @@ export default {
         v-if="isNavigationPannelVisible" 
         v-model:to-marker="toMarker" 
         v-model:from-marker="fromMarker"
-        @route-picked="routePicked" />
+        @route-picked="routePicked"
+        @navigate-back="closeNavigationPannel" />
+    <RouteVisualiserSidePannel v-if="false"/>
     <TransportMap 
         :mode="mapMode" 
         :route="pickedRoute" 
