@@ -34,6 +34,9 @@ export default {
     computed: {
         isNavigationPannelVisible() {
             return this.mapMode == 'nav';
+        },
+        isRouteVisualiserVisible() {
+            return this.mapMode == 'bus';
         }
     },
     methods:
@@ -111,7 +114,7 @@ export default {
         v-model:from-marker="fromMarker"
         @route-picked="routePicked"
         @navigate-back="closeNavigationPannel" />
-    <RouteVisualiserSidePannel v-if="false"/>
+    <RouteVisualiserSidePannel v-if="isRouteVisualiserVisible"/>
     <TransportMap 
         :mode="mapMode" 
         :route="pickedRoute" 
