@@ -153,56 +153,56 @@ export default {
         <div class="flex flex-col justify-between border rounded p-4 w-full h-full">
             <div class="overflow-y-auto">
                 <h1 class="text-3xl mb-6 font-bold text-primary">
-                    {{ $t('public.transportMap.navigation') }}
+                    {{ $t('public.transportMap.navigation.navigation') }}
                 </h1>
 
                 <h1 class="text-2xl mb-4 mt-6 font-bold text-text">
-                    {{ $t('public.transportMap.fromPoint') }}
+                    {{ $t('public.transportMap.navigation.fromPoint') }}
                 </h1>
-                <v-text-field :label="$t('public.transportMap.from')" v-model.trim="from" @blur="v$.from.$touch"
+                <v-text-field :label="$t('public.transportMap.navigation.from')" v-model.trim="from" @blur="v$.from.$touch"
                     @input="v$.from.$touch" :error-messages="v$.from.$errors.map(e => e.$message)" />
                 <div class="columns-2">
-                    <v-text-field :label="$t('public.transportMap.latitude')" :disabled="true"
+                    <v-text-field :label="$t('public.transportMap.navigation.latitude')" :disabled="true"
                         v-model.trim="fromLatitude">
                     </v-text-field>
-                    <v-text-field :label="$t('public.transportMap.longitude')" :disabled="true"
+                    <v-text-field :label="$t('public.transportMap.navigation.longitude')" :disabled="true"
                         v-model.trim="fromLongitude">
                     </v-text-field>
                 </div>
                 <div class="columns-2">
                     <v-btn color="primary" block @click="chooseFromLocation">
-                        {{ $t('public.transportMap.chooseFrom') }}
+                        {{ $t('public.transportMap.navigation.chooseFrom') }}
                     </v-btn>
                     <v-btn color="secondary" block @click="lookUpFromAddress">
-                        {{ $t('public.transportMap.loadFrom') }}
+                        {{ $t('public.transportMap.navigation.loadFrom') }}
                     </v-btn>
                 </div>
 
                 <h1 class="text-2xl mb-4 mt-6 font-bold text-text">
-                    {{ $t('public.transportMap.toPoint') }}
+                    {{ $t('public.transportMap.navigation.toPoint') }}
                 </h1>
-                <v-text-field :label="$t('public.transportMap.to')" v-model.trim="to" @blur="v$.to.$touch"
+                <v-text-field :label="$t('public.transportMap.navigation.to')" v-model.trim="to" @blur="v$.to.$touch"
                     @input="v$.to.$touch" :error-messages="v$.to.$errors.map(e => e.$message)" />
                 <div class="columns-2">
-                    <v-text-field outline :label="$t('public.transportMap.latitude')" :disabled="true"
+                    <v-text-field outline :label="$t('public.transportMap.navigation.latitude')" :disabled="true"
                         v-model.trim="toLatitude">
                     </v-text-field>
-                    <v-text-field :label="$t('public.transportMap.longitude')" :disabled="true"
+                    <v-text-field :label="$t('public.transportMap.navigation.longitude')" :disabled="true"
                         v-model.trim="toLongitude">
                     </v-text-field>
                 </div>
                 <div class="columns-2">
                     <v-btn color="primary" block @click="chooseToLocation">
-                        {{ $t('public.transportMap.chooseTo') }}
+                        {{ $t('public.transportMap.navigation.chooseTo') }}
                     </v-btn>
                     <v-btn color="secondary" block @click="lookUpТоAddress">
-                        {{ $t('public.transportMap.loadTo') }}
+                        {{ $t('public.transportMap.navigation.loadTo') }}
                     </v-btn>
                 </div>
             </div>
             <div>
                 <v-btn color="primary" block @click="navigate">
-                    {{ $t('public.transportMap.navigate') }}
+                    {{ $t('public.transportMap.navigation.navigate') }}
                 </v-btn>
             </div>
         </div>

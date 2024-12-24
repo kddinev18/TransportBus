@@ -21,7 +21,7 @@ export default {
             if(response.status != 200) {
                 this.$snackbar.add({
                     type: 'error',
-                    text: this.$t('public.transportMap.noRoutesFound'),
+                    text: this.$t('public.transportMap.navigation.noRoutesFound'),
                 });
                 return;
             }

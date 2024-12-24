@@ -40,7 +40,7 @@ export default {
     emits: ['routePicked'],
     watch: {
         currentChosenIndex:
-        { 
+        {
             handler(newValue) {
                 if (newValue != this.index) {
                     this.isExpanded = false;
@@ -52,7 +52,8 @@ export default {
 </script>
 
 <template>
-    <div class="p-4 bg-primary shadow-md rounded-lg w-full" :class="[isExpanded ? '' : 'mb-4']" @click="routePicked(route)">
+    <div class="p-4 bg-primary shadow-md rounded-lg w-full" :class="[isExpanded ? '' : 'mb-4']"
+        @click="routePicked(route)">
         <div class="grid grid-cols-2 gap-4">
             <div class="flex flex-col items-start">
                 <h1 class="text-mg font-bold text-white">{{ `${getTime(route.startTime)} -
@@ -65,19 +66,25 @@ export default {
         <div class="flex flex-row justify-between items-center mt-4">
             <template v-for="(leg, index) in route.legs" :key="`icon-${index}`">
                 <div class="flex flex-row items-center">
-                    <v-icon color="background" v-if="leg.mode == 'WALK'" icon="mdi-walk" size="18"></v-icon>
-                    <v-icon color="background" v-else icon="mdi-bus" size="18"></v-icon>
-                    <div class="flex flex-col items-start ml-2 bg-accent p-2 rounded-lg">
-                        <p v-if="leg.mode == 'WALK'" class="text-sm font-bold text-white">{{
-                            getMinutes(leg.endTime -
-                                leg.startTime) }}</p>
-                        <p v-else class="text-sm font-bold text-white">{{ leg.route }}</p>
-                    </div>
+                    <template v-if="leg.mode === 'WALK'">
+                        <v-icon color="background" icon="mdi-walk" size="18"></v-icon>
+                        <div class="flex flex-col items-start ml-2 bg-accent p-2 rounded-lg">
+                            <p class="text-sm font-bold text-white">{{ getMinutes(leg.endTime - leg.startTime) }}</p>
+                        </div>
+                    </template>
+
+                    <template v-else>
+                        <v-icon color="background" icon="mdi-bus" size="18"></v-icon>
+                        <div class="flex flex-col items-start ml-2 bg-accent p-2 rounded-lg">
+                            <p class="text-sm font-bold text-white">{{ leg.route }}</p>
+                        </div>
+                    </template>
+
                 </div>
                 <v-icon color="background" v-if="index != route.legs.length - 1" icon="mdi-arrow-right-thick"
                     size="13"></v-icon>
             </template>
         </div>
     </div>
-    <RouteButtonExpandionPannel :is-expanded="isExpanded"/>
+    <RouteButtonExpandionPannel :is-expanded="isExpanded" />
 </template>
