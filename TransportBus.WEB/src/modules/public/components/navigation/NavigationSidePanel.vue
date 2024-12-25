@@ -43,6 +43,9 @@ export default {
         },
         exitPointPicker() {
             this.$emit('navigateBack');
+        },
+        async validate() {
+            return await this.v$.$validate()
         }
     },
     props: {
