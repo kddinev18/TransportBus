@@ -31,9 +31,7 @@ export default {
                 return;
             }
 
-            this.$emit('isLoading', true);
-
-            const response = await GeoCodeService.getLocation(this.to);
+            const response = await GeoCodeService.getLocation(this.pointAddress);
             if (response.data.results.length > 0) {
                 let lat = response.data.results[0].geometry.location.lat;
                 let lng = response.data.results[0].geometry.location.lng;
@@ -48,11 +46,9 @@ export default {
                     title: this.pointTitle
                 });
             }
-
-            this.$emit('isLoading', false);
         },
         async updatePointData(newValue) {
-            this.$emit('isLoading', true);
+            console.log('emittrue', true);
             const response = await GeoCodeService.getAddress(newValue.position.lat, newValue.position.lng)
             if (response.data.results.length > 0) {
                 this.pointAddress = response.data.results[0].formatted_address;
@@ -65,7 +61,10 @@ export default {
                     text: this.$t('public.transportMap.navigation.noAddressFound'),
                 });
             }
-            this.$emit('isLoading', false);
+        },
+        async validate()
+        {
+            return await this.v$.$validate()
         },
         choosePoint() {
             this.$emit('update:point', null);
@@ -85,7 +84,7 @@ export default {
         pointTitle: String,
         resourceExtension: String
     },
-    emits: ['update:point', 'isLoading'],
+    emits: ['update:point'],
     watch: {
         point: {
             handler(newValue) {
@@ -108,10 +107,10 @@ export default {
             @input="v$.pointAddress.$touch" :error-messages="v$.pointAddress.$errors.map(e => e.$message)" />
         <div class="columns-2">
             <v-text-field :label="$t('public.transportMap.navigation.latitude')" :disabled="true"
-                v-model.trim="latitude">
+                v-model.trim="latitude" class="focus:outline-none focus:ring-0 focus:border-0">
             </v-text-field>
             <v-text-field :label="$t('public.transportMap.navigation.longitude')" :disabled="true"
-                v-model.trim="longitude">
+                v-model.trim="longitude" class="focus:outline-none focus:ring-0 focus:border-0">
             </v-text-field>
         </div>
         <div class="columns-2">

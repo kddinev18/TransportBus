@@ -1,8 +1,14 @@
 <script>
 import { useRoutesStore } from '../../../../core/stores/routesStore';
 import { useStopsStore } from '../../../../core/stores/stopsStore';
+import RouteOptions from './RouteOptions.vue';
+import RouteSelector from './RouteSelector.vue';
 
 export default {
+    components: {
+        RouteSelector,
+        RouteOptions
+    },
     data() {
         return {
             routesStore: useRoutesStore(),
@@ -60,26 +66,8 @@ export default {
                     {{ $t('public.transportMap.routeVisualiser.v') }}
                 </h1>
             </div>
-            <v-autocomplete v-model="chosenRoute" :items="routesStore.routes" clearable item-title="longName"
-                item-value="id" :label="$t('public.transportMap.routeVisualiser.route')">
-                <template v-slot:item="{ props, item }">
-                    <div class="flex flex-row items-center pl-4">
-                        <div class="w-7 h-7 rounded-full flex items-center justify-center"
-                            :style="{ backgroundColor: `#${item.raw.color}` }">
-                            <p class="font-bold text-sm">
-                                {{ item.raw.shortName }}
-                            </p>
-                        </div>
-                        <v-list-item v-bind="props" :title="item.raw.longName"></v-list-item>
-                    </div>
-                </template>
-            </v-autocomplete>
-            <v-autocomplete v-model="chosenPattern" :items="patterns" clearable item-title="value" item-value="value"
-                :label="$t('public.transportMap.routeVisualiser.direction')">
-                <template v-slot:item="{ props, item }">
-                    <v-list-item v-bind="props" :title="item.raw.value"></v-list-item>
-                </template>
-            </v-autocomplete>
+            <RouteSelector></RouteSelector>
+            <RouteOptions></RouteOptions>
         </div>
     </div>
 </template>

@@ -3,6 +3,7 @@ import { GoogleMap, Polyline, Circle, Marker } from 'vue3-google-map';
 import { Secrets } from '../../../../core/utils/secrets';
 import { decode } from '@mapbox/polyline';
 import { useStopsStore } from '../../../../core/stores/stopsStore';
+import { useMarkersStore } from '../../stores/markersStore';
 export default {
     components: {
         GoogleMap,
@@ -16,6 +17,7 @@ export default {
     data() {
         return {
             stopsStore: useStopsStore(),
+            merkersStore: useMarkersStore(),
             apiKey: '',
             restrictions: {
                 clickableIcons: false,
@@ -42,17 +44,15 @@ export default {
     },
     computed: {
         isFromMarkerVisible() {
-            return this.fromMarker != null;
+            return this.merkersStore.fromMarker != null;
         },
         isToMarkerVisible() {
-            return this.toMarker != null;
+            return this.merkersStore.toMarker != null;
         }
     },
     props: {
         routes: Array,
         route: Object,
-        toMarker: Object,
-        fromMarker: Object,
         mode: String
     },
     watch: {
@@ -60,6 +60,11 @@ export default {
             handler(newValue) {
                 if (newValue) {
                     this.routePicked(newValue);
+                }
+                else
+                {
+                    this.lines = [];
+                    this.stops = [];
                 }
             }
         },
@@ -119,7 +124,7 @@ export default {
         class="h-full w-full" @click="mapClicked($event.latLng.lat, $event.latLng.lng)">
         <Circle v-for="stop in stops" :options="stop" :key="`stop-${stop.id}`" />
         <Polyline v-for="line in lines" :options="line" :key="`route-${line.id}`" />
-        <Marker v-if="isFromMarkerVisible" :options="fromMarker" />
-        <Marker v-if="isToMarkerVisible" :options="toMarker" />
+        <Marker v-if="isFromMarkerVisible" :options="merkersStore.fromMarker" />
+        <Marker v-if="isToMarkerVisible" :options="merkersStore.toMarker" />
     </GoogleMap>
 </template>

@@ -6,6 +6,7 @@ import { useRoutesStore } from '../../../core/stores/routesStore';
 import NavigationSidePanel from '../components/navigation/NavigationSidePanel.vue';
 import RouteVisualiserSidePannel from '../components/routeVisualisation/RouteVisualiserSidePannel.vue';
 import MapTools from '../components/map/MapTools.vue';
+import { useMarkersStore } from '../stores/markersStore';
 
 export default {
     components: {
@@ -19,10 +20,9 @@ export default {
         return {
             stopsStore: useStopsStore(),
             routesStore: useRoutesStore(),
+            markersStore: useMarkersStore(),
             isLoading: true,
             pickedRoute: null,
-            toMarker: null,
-            fromMarker: null,
             mapMode: 'none',
         }
     },
@@ -42,8 +42,8 @@ export default {
     methods:
     {
         changeMode() {
-            this.toMarker = null;
-            this.fromMarker = null;
+            this.markersStore.toMarker = null;
+            this.markersStore.fromMarker = null;
         },
         mapClicked(coords) {
             if (this.mapMode == 'nav') {
@@ -52,23 +52,23 @@ export default {
             }
         },
         setMarker(lat, lng) {
-            if (this.fromMarker == null) {
-                this.fromMarker = {
+            if (this.markersStore.fromMarker == null) {
+                this.markersStore.fromMarker = {
                     id: 'from',
                     position: { lat: lat, lng: lng },
                     label: 'F',
                     title: 'From'
                 };
             }
-            else if (this.toMarker == null) {
-                this.toMarker = {
+            else if (this.markersStore.toMarker == null) {
+                this.markersStore.toMarker = {
                     id: 'to',
                     position: { lat: lat, lng: lng },
                     label: 'T',
                     title: 'To'
                 };
             }
-            console.log('set marker', this.fromMarker, this.toMarker);
+            console.log('set marker', this.markersStore.fromMarker, this.markersStore.toMarker);
         },
         routePicked(route) {
             this.pickedRoute = route;
@@ -109,16 +109,12 @@ export default {
             }
         ]" />
     <NavigationSidePanel 
-        v-if="isNavigationPannelVisible" 
-        v-model:to-marker="toMarker" 
-        v-model:from-marker="fromMarker"
+        v-if="isNavigationPannelVisible"
         @route-picked="routePicked"
         @navigate-back="closeNavigationPannel" />
     <RouteVisualiserSidePannel v-if="isRouteVisualiserVisible"/>
     <TransportMap 
         :mode="mapMode" 
-        :route="pickedRoute" 
-        :to-marker="toMarker" 
-        :from-marker="fromMarker"
+        :route="pickedRoute"
         @map-clicked="mapClicked" />
 </template>
