@@ -37,7 +37,7 @@ export default {
             {{ $t('public.transportMap.navigation.navigation') }}
         </h1>
     </div>
-    <div class="overflow-y-auto mt-2 mb-2">
+    <div class="overflow-y-auto mt-2 mb-2 flex-grow">
 
         <PointForm v-model:point="merkersStore.fromMarker" pointId="from" pointLabel="F" pointTitle="from"
             resourceExtension="from" ref="from" />
@@ -48,7 +48,7 @@ export default {
 
 
     </div>
-    <div>
+    <div class="flex">
         <v-btn color="primary" block @click="navigate">
             {{ $t('public.transportMap.navigation.navigate') }}
         </v-btn>

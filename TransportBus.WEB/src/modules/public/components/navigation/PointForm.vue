@@ -48,7 +48,6 @@ export default {
             }
         },
         async updatePointData(newValue) {
-            console.log('emittrue', true);
             const response = await GeoCodeService.getAddress(newValue.position.lat, newValue.position.lng)
             if (response.data.results.length > 0) {
                 this.pointAddress = response.data.results[0].formatted_address;

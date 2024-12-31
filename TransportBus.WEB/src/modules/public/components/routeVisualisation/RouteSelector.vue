@@ -9,61 +9,30 @@ export default {
             stopsStore: useStopsStore(),
             patterns: [],
             chosenRoute: null,
-            chosenPattern: null,
             chooseAllRoutes: false,
-        }
-    },
-    methods: {
-        getPatterns() {
-            if (this.chosenRoute) {
-                this.patterns = this.routesStore.getRouteById(this.chosenRoute).patterns.map(pattern => {
-                    return {
-                        id: pattern.index,
-                        value: `${this.getStopName(pattern.stops[0])} - ${this.getStopName(pattern.stops[pattern.stops.length - 1])}`,
-                        raw: pattern
-                    }
-                });
-            }
-        },
-        getStopName(stopId) {
-            return this.stopsStore.getStopById(stopId).name.split(' / ')[0];
+            allPatternsDirection: 0,
         }
     },
     computed: {
-        routeInputDisabled() {
-            return this.chooseAllRoutes == true;
-        },
         directionsInputDisabled() {
             return !this.chosenRoute || this.chooseAllRoutes == true;
         }
     },
-    watch: {
-        chosenRoute: {
-            handler(val) {
-                if (val) {
-                    this.getPatterns();
-                }
-                else {
-                    this.patterns = [];
-                }
-            }
+    methods:
+    {
+        addRoute() {
+            this.$emit('addRoute', this.chosenRoute);
+            this.chosenRoute = null;
         },
-        chosenPattern: {
-            handler(val) {
-                if (val) {
-                    this.$emit('patternChosen', val.raw);
-                }
-            }
-        },
-        chooseAllRoutes: {
-            handler(val) {
-                if (val) {
-                    this.$emit('allRoutesChosen');
-                }
-            }
+        addAllRoutes() {
+            this.$emit('addAllRoutes');
+            this.chosenRoute = null;
         }
     },
-    emits: ['patternChosen', 'allRoutesChosen'],
+    props: {
+        routes: Array
+    },
+    emits: ['addRoute', 'addAllRoutes'],
 }
 </script>
 
@@ -71,9 +40,8 @@ export default {
     <h1 class="text-2xl mb-4 mt-6 font-bold text-text">
         {{ $t(`public.transportMap.routeVisualiser.routePicker`) }}
     </h1>
-    <v-checkbox v-model="chooseAllRoutes" color="primary" :label="$t(`public.transportMap.routeVisualiser.chooseAllRouites`)"></v-checkbox>
-    <v-autocomplete v-model="chosenRoute" :items="routesStore.routes" clearable item-title="longName" item-value="id"
-        :label="$t('public.transportMap.routeVisualiser.route')" :disabled="routeInputDisabled">
+    <v-autocomplete v-model="chosenRoute" :items="routes" item-title="longName" item-value="id"
+        :label="$t('public.transportMap.routeVisualiser.route')" v-if="!chooseAllRoutes">
         <template v-slot:item="{ props, item }">
             <div class="flex flex-row items-center pl-4">
                 <div class="w-7 h-7 rounded-full flex items-center justify-center"
@@ -86,10 +54,12 @@ export default {
             </div>
         </template>
     </v-autocomplete>
-    <v-autocomplete v-model="chosenPattern" :items="patterns" clearable item-title="value" item-value="value"
-        :disabled="directionsInputDisabled" :label="$t('public.transportMap.routeVisualiser.direction')">
-        <template v-slot:item="{ props, item }">
-            <v-list-item v-bind="props" :title="item.raw.value"></v-list-item>
-        </template>
-    </v-autocomplete>
+    <div class="gap-4 flex flex-row items-center justify-between">
+        <v-btn color="primary" @click="addRoute">
+            {{ $t('public.transportMap.routeVisualiser.addRoute') }}
+        </v-btn>
+        <v-btn color="primary" @click="addAllRoutes">
+            {{ $t('public.transportMap.routeVisualiser.addAll') }}
+        </v-btn>
+    </div>
 </template>

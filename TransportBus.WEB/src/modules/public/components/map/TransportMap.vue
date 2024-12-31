@@ -3,6 +3,7 @@ import { GoogleMap, Polyline, Circle, Marker } from 'vue3-google-map';
 import { Secrets } from '../../../../core/utils/secrets';
 import { decode } from '@mapbox/polyline';
 import { useStopsStore } from '../../../../core/stores/stopsStore';
+import { useRoutesStore } from '../../../../core/stores/routesStore';
 import { useMarkersStore } from '../../stores/markersStore';
 export default {
     components: {
@@ -17,6 +18,7 @@ export default {
     data() {
         return {
             stopsStore: useStopsStore(),
+            routesStore: useRoutesStore(),
             merkersStore: useMarkersStore(),
             apiKey: '',
             restrictions: {
@@ -52,21 +54,26 @@ export default {
     },
     props: {
         routes: Array,
-        route: Object,
+        navigation: Object,
         mode: String
     },
     watch: {
-        route: {
+        navigation: {
             handler(newValue) {
                 if (newValue) {
-                    this.routePicked(newValue);
+                    this.navigationPicked(newValue);
                 }
-                else
-                {
+                else {
                     this.lines = [];
                     this.stops = [];
                 }
             }
+        },
+        routes: {
+            handler(newValue) {
+                this.routesPicked(newValue);
+            },
+            deep: true
         },
         mode: {
             handler() {
@@ -84,8 +91,28 @@ export default {
             this.lines = [];
             this.stops = [];
         },
-        routePicked(route) {
-            if(route == null) {
+        geoCodeToPoints(path) {
+            return decode(path).map((point) => {
+                return {
+                    lat: point[0],
+                    lng: point[1]
+                };
+            });
+        },
+        getStops(fromStopId, toStopId, routeId) {
+            let route = this.routesStore.getRouteById(routeId);
+
+            for (const { stops } of route.patterns) {
+                const startIndex = stops.indexOf(fromStopId);
+                const endIndex = stops.indexOf(toStopId);
+
+                if (startIndex !== -1 && endIndex !== -1 && startIndex < endIndex) {
+                    return stops.slice(startIndex, endIndex + 1);
+                }
+            }
+        },
+        navigationPicked(route) {
+            if (route == null) {
                 this.lines = [];
                 this.stops = [];
                 return;
@@ -94,23 +121,67 @@ export default {
             this.lines = [];
             for (let i = 0; i < route.legs.length; i++) {
                 let leg = route.legs[i];
-                let path = decode(leg.legGeometry.points).map((point) => {
-                    return {
-                        lat: point[0],
-                        lng: point[1]
-                    };
-                });
-                let color = leg.mode == 'WALK' ? '#000000' : '#FF0000';
+                let color = leg.mode == 'WALK' ? '#000000' : `#${this.routesStore.getRouteById(leg.routeId).color}`;
                 this.lines.push({
                     id: i,
                     name: leg.mode,
                     code: leg.mode,
-                    path: path,
+                    path: this.geoCodeToPoints(leg.legGeometry.points),
                     geodesic: true,
                     strokeColor: color,
                     strokeOpacity: 1.0,
-                    strokeWeight: 3,
+                    strokeWeight: 4,
                 });
+
+                if (leg.mode == 'BUS') {
+                    let stops = this.getStops(leg.from.stopId, leg.to.stopId, leg.routeId);
+                    for (let j = 0; j < stops.length; j++) {
+                        let stop = this.stopsStore.getStopById(stops[j]);
+                        this.stops.push({
+                            id: `${i}-${j}`,
+                            center: { lat: stop.latitude, lng: stop.longitude },
+                            radius: 40,
+                            strokeColor: `#${this.routesStore.getRouteById(leg.routeId).color}`,
+                            strokeOpacity: 0.8,
+                            strokeWeight: 2,
+                            fillColor: `#${this.routesStore.getRouteById(leg.routeId).color}`,
+                            fillOpacity: 0.35
+                        });
+                    }
+                }
+            }
+        },
+        routesPicked(routes) {
+            if (routes == null) {
+                return;
+            }
+            this.stops = [];
+            this.lines = [];
+            console.log(routes);
+            for (let i = 0; i < routes.length; i++) {
+                let route = this.routesStore.getRouteById(routes[i].id);
+                let pattern = route.patterns.find((pattern) => pattern.direction == routes[i].direction);
+                this.lines.push({
+                    id: i,
+                    path: this.geoCodeToPoints(pattern.geometry),
+                    geodesic: true,
+                    strokeColor: `#${route.color}`,
+                    strokeOpacity: 1.0,
+                    strokeWeight: 4,
+                });
+                for (let j = 0; j < pattern.stops.length; j++) {
+                    let stop = this.stopsStore.getStopById(pattern.stops[j]);
+                    this.stops.push({
+                        id: `${i}-${j}`,
+                        center: { lat: stop.latitude, lng: stop.longitude },
+                        radius: 40,
+                        strokeColor: `#${route.color}`,
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2,
+                        fillColor: `#${route.color}`,
+                        fillOpacity: 0.35
+                    });
+                }
             }
         }
     }
