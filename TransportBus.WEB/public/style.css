@@ -13,3 +13,32 @@ body {
 .v-text-field input:focus {
   background-color: transparent !important;
 }
+
+/* Scrollbar container */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Scrollbar track */
+::-webkit-scrollbar-track {
+  background: #f0f0f0; /* Light gray for the track */
+  border-radius: 10px; /* Rounded corners */
+}
+
+/* Scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background: #bebebe; /* Primary color */
+  border-radius: 10px; /* Rounded corners */
+  border: 2px solid #f0f0f0; /* Adds spacing around thumb */
+}
+
+/* Hover state for thumb */
+::-webkit-scrollbar-thumb:hover {
+  background: #433bff; /* Accent color for hover */
+}
+
+/* Horizontal scrollbar (optional) */
+::-webkit-scrollbar-horizontal {
+  height: 6px;
+}

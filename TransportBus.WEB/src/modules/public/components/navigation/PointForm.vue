@@ -100,7 +100,7 @@ export default {
 <template>
     <AppLoader v-if="isLoading" />
     <template v-else>
-        <h1 class="text-2xl mb-4 mt-6 font-bold text-text">
+        <h1 class="text-2xl mb-4 font-bold text-text">
             {{ $t(`public.transportMap.navigation.${resourceExtension}Point`) }}
         </h1>
         <v-text-field :label="$t(`public.transportMap.navigation.${resourceExtension}`)" v-model.trim="pointAddress" @blur="v$.pointAddress.$touch"
