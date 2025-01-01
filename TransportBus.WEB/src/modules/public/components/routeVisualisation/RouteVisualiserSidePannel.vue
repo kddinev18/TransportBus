@@ -34,20 +34,26 @@ export default {
             this.availableRoutes = this.availableRoutes.filter(r => r.id != route);
         },
         addAllRoutes() {
-            let temp = [];
-            for (const route of this.routesStore.routes) {
-                temp.push({
+            for (const route of this.availableRoutes) {
+                this.chosenRoutes.push({
                     id: route.id,
-                    color: route.color,
+                    name: route.longName,
                     direction: 0,
+                    directions: route.patterns.map(p => p.direction),
+                    routeColor: route.color,
+                    stopsColor: route.color,
                     stopsSize: 2,
                     routeThickness: 4,
                     isVisible: true,
                 });
             }
-            this.chosenRoutes = temp;
             this.availableRoutes = [];
         },
+        updateGivenRoute(route)
+        {
+            let index = this.chosenRoutes.findIndex(r => r.id == route.id);
+            this.chosenRoutes[index] = route;
+        }
     },
     watch: {
         chosenRoutes: {
@@ -72,7 +78,7 @@ export default {
             </div>
             <RouteSelector @add-route="addRoute" @add-all-routes="addAllRoutes" :routes="availableRoutes">
             </RouteSelector>
-            <RouteOptions v-model:routes="chosenRoutes"></RouteOptions>
+            <RouteOptions v-for="route in routes" :routes="route" @update-route="updateGivenRoute" :key="`route-key-${route.id}`"></RouteOptions>
         </div>
     </div>
 </template>

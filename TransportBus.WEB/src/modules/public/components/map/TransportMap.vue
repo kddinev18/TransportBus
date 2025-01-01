@@ -25,7 +25,7 @@ export default {
                 clickableIcons: false,
                 disableDefaultUI: true,
                 mapId: '21982fcaf227d4c8',
-                minZoom: 13,
+                minZoom: 12,
                 maxZoom: 21,
                 zoom: 13,
                 center: { lat: 42.485444, lng: 27.448780 },
@@ -157,10 +157,13 @@ export default {
             }
             this.stops = [];
             this.lines = [];
-            console.log(routes);
             for (let i = 0; i < routes.length; i++) {
                 let route = this.routesStore.getRouteById(routes[i].id);
                 let pattern = route.patterns.find((pattern) => pattern.direction == routes[i].direction);
+                if(!pattern) {
+                    pattern = route.patterns.find((pattern) => pattern.direction == -1 || pattern.direction == 1);
+                }
+                console.log('For route', route.id, pattern);
                 this.lines.push({
                     id: i,
                     path: this.geoCodeToPoints(pattern.geometry),

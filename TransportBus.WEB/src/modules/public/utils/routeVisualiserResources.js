@@ -8,6 +8,8 @@ const routeVisualiserBg = {
   routeThickness: 'Дебелина на маршрута',
   stopsSize: 'Размер на спирките',
   routePicker: 'Избор на маршрут',
+  addRoute: 'Добави маршрут',
+  addAll: 'Добави всички',
 };
 
 const routeVisualiserEn = {
@@ -20,6 +22,8 @@ const routeVisualiserEn = {
   routeThicknes: 'Route thickness',
   stopSize: 'Stop size',
   routePicker: 'Route picker',
+  addRoute: 'Add route',
+  addAll: 'Add all',
 };
 
 export default {

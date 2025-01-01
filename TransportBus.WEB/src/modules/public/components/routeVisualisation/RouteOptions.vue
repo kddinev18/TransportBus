@@ -1,7 +1,4 @@
 <script>
-import { integer } from '@vuelidate/validators';
-import { useRoutesStore } from '../../../../core/stores/routesStore';
-import { useStopsStore } from '../../../../core/stores/stopsStore';
 import ColorPickerDialog from '../../../../core/components/ColorPickerDialog.vue';
 
 export default {
@@ -10,91 +7,42 @@ export default {
     },
     data() {
         return {
-            routesStore: useRoutesStore(),
-            stopsStore: useStopsStore(),
-            optionsData: {
-                minRouteThickness: 1,
-                maxRouteThickness: 10,
-
-                minStopsSize: 1,
-                maxStopsSize: 10,
-
-                startRouteThickness: 2,
-                startStopsSize: 1,
-
-                routeThicknessStep: 1,
-                stopsSizeStep: 1
-            },
-            options: {
-                route: {
-                    id: 0,
-                    color: '000000',
-                    shortName: '',
-                    longName: '',
-                    stops: [],
-                    geometry: null,
-                },
-                stopsColor: '000000',
-                routeThickness: 2,
-                stopsSize: 1
-            },
-            dialog: true
+            dialog: true,
+            routeData: null
         }
     },
     methods: {
-        routeColorSelected(color) {
-            if (color) {
-                this.options.route.color = color;
-            }
-        },
-        stopsColorSelected(color) {
-            if (color) {
-                this.options.stopsColor = color;
-            }
-        },
-        init() {
-            let route = this.routesStore.getRouteById(this.routeId);
-            this.options.route =
-            {
-                id: route.id,
-                shortName: route.shortName,
-                longName: route.longName,
-                color: route.color,
-                stops: route.patterns.find(p => p.index == this.patternId).stops.map(stopId => this.stopsStore.getStopById(stopId)),
-                geometry: route.patterns.find(p => p.index == this.patternId).geometry,
-            }
-            this.options.stopsColor = route.color;
+        init(newValue) {
+            this.routeData = newValue;
         }
     },
     props:
     {
-        routeId: integer,
-        patternId: integer
+        route: Object
     },
     watch: {
-        routeId: {
-            handler(val) {
-                if (val) {
-                    this.init();
-                }
-            }
-        },
-        patternId: {
-            handler(val) {
-                if (val) {
-                    this.$emit('optionsChanged', this.options);
+        route: {
+            handler(newValue) {
+                if (newValue) {
+                    this.init(newValue);
                 }
             },
             deep: true
         },
+        routeData: {
+            handler(newValue) {
+                this.$emit('updateRoute', newValue);
+            },
+            deep: true
+        }
     },
-    emits: ['optionsChanged']
+    emits: ['updateRoute']
 }
 </script>
 
 <template>
     <h1 class="text-2xl mb-4 mt-6 font-bold text-text">
-        {{ options.route.longName }}
+        {{ routeData.name }}
     </h1>
     <div class="flex flex-col space-y-4">
         <div class="flex flex-row justify-between items-center">
