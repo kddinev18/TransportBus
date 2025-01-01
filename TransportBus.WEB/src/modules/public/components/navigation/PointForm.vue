@@ -48,7 +48,6 @@ export default {
             }
         },
         async updatePointData(newValue) {
-            console.log('emittrue', true);
             const response = await GeoCodeService.getAddress(newValue.position.lat, newValue.position.lng)
             if (response.data.results.length > 0) {
                 this.pointAddress = response.data.results[0].formatted_address;
@@ -100,7 +99,7 @@ export default {
 <template>
     <AppLoader v-if="isLoading" />
     <template v-else>
-        <h1 class="text-2xl mb-4 mt-6 font-bold text-text">
+        <h1 class="text-2xl mb-4 font-bold text-text">
             {{ $t(`public.transportMap.navigation.${resourceExtension}Point`) }}
         </h1>
         <v-text-field :label="$t(`public.transportMap.navigation.${resourceExtension}`)" v-model.trim="pointAddress" @blur="v$.pointAddress.$touch"

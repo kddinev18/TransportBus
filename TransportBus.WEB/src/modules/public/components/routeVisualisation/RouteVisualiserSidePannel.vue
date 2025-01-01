@@ -13,50 +13,51 @@ export default {
         return {
             routesStore: useRoutesStore(),
             stopsStore: useStopsStore(),
-            patterns: [],
-            chosenRoute: null,
-            chosenPattern: null
+            chosenRoutes: [],
+            availableRoutes: [],
         }
+    },
+    created() {
+        this.availableRoutes = this.routesStore.routes;
     },
     methods: {
-        getPatterns() {
-            if (this.chosenRoute) {
-                this.patterns = this.routesStore.getRouteById(this.chosenRoute).patterns.map(pattern => {
-                    return {
-                        id: pattern.index,
-                        value: `${this.getStopName(pattern.stops[0])} - ${this.getStopName(pattern.stops[pattern.stops.length - 1])}`,
-                        raw: pattern
-                    }
+        addRoute(route) {
+            let routeData = this.routesStore.getRouteById(route);
+            this.chosenRoutes.push({
+                id: routeData.id,
+                color: routeData.color,
+                direction: 0,
+                stopsSize: 2,
+                routeThickness: 4,
+                isVisible: true,
+            });
+            this.availableRoutes = this.availableRoutes.filter(r => r.id != route);
+        },
+        addAllRoutes() {
+            let temp = [];
+            for (const route of this.routesStore.routes) {
+                temp.push({
+                    id: route.id,
+                    color: route.color,
+                    direction: 0,
+                    stopsSize: 2,
+                    routeThickness: 4,
+                    isVisible: true,
                 });
             }
+            this.chosenRoutes = temp;
+            this.availableRoutes = [];
         },
-        getStopName(stopId) {
-            return this.stopsStore.getStopById(stopId).name.split(' / ')[0];
-        },
-        optionsChanged(options) {
-            console.log(options);
-        }
     },
     watch: {
-        chosenRoute: {
-            handler(val) {
-                if (val) {
-                    this.getPatterns();
-                }
-                else {
-                    this.patterns = [];
-                }
-            }
-        },
-        chosenPattern: {
-            handler(val) {
-                if (val) {
-                    this.$emit('patternChosen', val.raw);
-                }
-            }
-        },
+        chosenRoutes: {
+            handler(newValue) {
+                this.$emit('routesSelected', newValue);
+            },
+            deep: true
+        }
     },
-    emits: ['patternChosen'],
+    emits: ['routesSelected'],
 }
 </script>
 
@@ -69,8 +70,9 @@ export default {
                     {{ $t('public.transportMap.routeVisualiser.routeVisualiser') }}
                 </h1>
             </div>
-            <RouteSelector></RouteSelector>
-            <RouteOptions @options-changed="optionsChanged"></RouteOptions>
+            <RouteSelector @add-route="addRoute" @add-all-routes="addAllRoutes" :routes="availableRoutes">
+            </RouteSelector>
+            <RouteOptions v-model:routes="chosenRoutes"></RouteOptions>
         </div>
     </div>
 </template>

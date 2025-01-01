@@ -22,7 +22,8 @@ export default {
             routesStore: useRoutesStore(),
             markersStore: useMarkersStore(),
             isLoading: true,
-            pickedRoute: null,
+            navigation: null,
+            routes: [],
             mapMode: 'none',
         }
     },
@@ -68,10 +69,12 @@ export default {
                     title: 'To'
                 };
             }
-            console.log('set marker', this.markersStore.fromMarker, this.markersStore.toMarker);
         },
-        routePicked(route) {
-            this.pickedRoute = route;
+        navigationPicked(route) {
+            this.navigation = route;
+        },
+        routesPicked(routes) {
+            this.routes = routes;
         },
         closeNavigationPannel() {
             this.mapMode = 'none';
@@ -110,11 +113,12 @@ export default {
         ]" />
     <NavigationSidePanel 
         v-if="isNavigationPannelVisible"
-        @route-picked="routePicked"
+        @route-picked="navigationPicked"
         @navigate-back="closeNavigationPannel" />
-    <RouteVisualiserSidePannel v-if="isRouteVisualiserVisible"/>
+    <RouteVisualiserSidePannel v-if="isRouteVisualiserVisible" @routes-selected="routesPicked"/>
     <TransportMap 
         :mode="mapMode" 
-        :route="pickedRoute"
+        :navigation="navigation"
+        :routes="routes"
         @map-clicked="mapClicked" />
 </template>

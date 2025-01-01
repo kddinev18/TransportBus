@@ -31,22 +31,24 @@ export default {
 </script>
 
 <template>
-    <div class="overflow-y-auto">
-        <div class="flex gap-4">
-            <v-btn class="col-span-1" density="comfortable" icon="mdi-arrow-left" @click="goBack"></v-btn>
-            <h1 class="text-3xl mb-6 font-bold text-primary">
-                {{ $t('public.transportMap.navigation.navigation') }}
-            </h1>
-        </div>
+    <div class="flex gap-4">
+        <v-btn class="col-span-1" density="comfortable" icon="mdi-arrow-left" @click="goBack"></v-btn>
+        <h1 class="text-3xl mb-6 font-bold text-primary">
+            {{ $t('public.transportMap.navigation.navigation') }}
+        </h1>
+    </div>
+    <div class="overflow-y-auto mt-2 mb-2 flex-grow">
 
         <PointForm v-model:point="merkersStore.fromMarker" pointId="from" pointLabel="F" pointTitle="from"
             resourceExtension="from" ref="from" />
+        <div class="mt-6">
+            <PointForm v-model:point="merkersStore.toMarker" pointId="to" pointLabel="T" pointTitle="to"
+                resourceExtension="to" ref="to" />
+        </div>
 
-        <PointForm v-model:point="merkersStore.toMarker" pointId="to" pointLabel="T" pointTitle="to"
-            resourceExtension="to" ref="to" />
 
     </div>
-    <div>
+    <div class="flex">
         <v-btn color="primary" block @click="navigate">
             {{ $t('public.transportMap.navigation.navigate') }}
         </v-btn>
