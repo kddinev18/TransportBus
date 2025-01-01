@@ -16,7 +16,7 @@ export default {
                 directions: [],
                 routeColor: '',
                 stopsColor: '',
-                stopsSize: 2,
+                stopsSize: 20,
                 routeThickness: 4,
                 isVisible: true,
             },
@@ -26,9 +26,9 @@ export default {
                 minRouteThickness: 1,
                 routeThicknessStep: 1,
 
-                maxStopsSize: 10,
-                minStopsSize: 1,
-                stopsSizeStep: 1
+                maxStopsSize: 100,
+                minStopsSize: 10,
+                stopsSizeStep: 10
             }
         }
     },

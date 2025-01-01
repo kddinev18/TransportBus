@@ -33,7 +33,7 @@ export default {
                 directions: routeData.patterns.map(p => p.direction),
                 routeColor: routeData.color,
                 stopsColor: routeData.color,
-                stopsSize: 2,
+                stopsSize: 20,
                 routeThickness: 4,
                 isVisible: true,
             });
@@ -48,7 +48,7 @@ export default {
                     directions: route.patterns.map(p => p.direction),
                     routeColor: route.color,
                     stopsColor: route.color,
-                    stopsSize: 2,
+                    stopsSize: 20,
                     routeThickness: 4,
                     isVisible: true,
                 });

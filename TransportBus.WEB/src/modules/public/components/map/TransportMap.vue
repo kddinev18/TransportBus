@@ -167,20 +167,20 @@ export default {
                     id: i,
                     path: this.geoCodeToPoints(pattern.geometry),
                     geodesic: true,
-                    strokeColor: `#${route.color}`,
+                    strokeColor: `#${routes[i].routeColor}`,
                     strokeOpacity: 1.0,
-                    strokeWeight: 4,
+                    strokeWeight: routes[i].routeThickness,
                 });
                 for (let j = 0; j < pattern.stops.length; j++) {
                     let stop = this.stopsStore.getStopById(pattern.stops[j]);
                     this.stops.push({
                         id: `${i}-${j}`,
                         center: { lat: stop.latitude, lng: stop.longitude },
-                        radius: 40,
-                        strokeColor: `#${route.color}`,
+                        radius: routes[i].stopsSize,
+                        strokeColor: `#${routes[i].stopsColor}`,
                         strokeOpacity: 0.8,
-                        strokeWeight: 2,
-                        fillColor: `#${route.color}`,
+                        strokeWeight: routes[i].routeThickness,
+                        fillColor: `#${routes[i].stopsColor}`,
                         fillOpacity: 0.35
                     });
                 }
