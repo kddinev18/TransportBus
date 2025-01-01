@@ -29,12 +29,18 @@ export default {
                 maxStopsSize: 100,
                 minStopsSize: 10,
                 stopsSizeStep: 10
-            }
+            },
         }
     },
     methods: {
         removeRoute() {
             this.$emit('removeRoute', this.routeData.id);
+        },
+        routeColorSelected(color) {
+            this.routeData.routeColor = color;
+        },
+        stopsColorSelected(color) {
+            this.routeData.stopsColor = color;
         }
     },
     props:
@@ -78,7 +84,7 @@ export default {
     </div>
     <div class="flex flex-col space-y-4">
         <div class="flex flex-row justify-between items-center">
-            <ColorPickerDialog v-model:color="routeData.routeColor">
+            <ColorPickerDialog :start-color="routeData.routeColor" @color-selected="routeColorSelected">
                 <template v-slot:activator="{ activatorProps }">
                     <v-btn color="primary" v-bind="activatorProps">
                         <div class="flex flex-row items-center justify-between">
@@ -91,7 +97,7 @@ export default {
                 </template>
             </ColorPickerDialog>
 
-            <ColorPickerDialog v-model:color="routeData.stopsColor">
+            <ColorPickerDialog :start-color="routeData.stopsColor" @color-selected="stopsolorSelected">
                 <template v-slot:activator="{ activatorProps }">
                     <v-btn color="primary" v-bind="activatorProps">
                         <div class="flex flex-row items-center justify-between">
