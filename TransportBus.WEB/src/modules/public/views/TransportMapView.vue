@@ -76,7 +76,7 @@ export default {
         routesPicked(routes) {
             this.routes = routes;
         },
-        closeNavigationPannel() {
+        navigateBack() {
             this.mapMode = 'none';
         }
     },
@@ -94,31 +94,23 @@ export default {
 
 <template>
     <AppLoader :isLoading="isLoading" />
-    <MapTools 
-        v-model:currentMode="mapMode" 
-        default-mode="none" 
-        :modes="[
-            {
-                mode: 'nav',
-                icon: 'mdi-navigation'
-            },
-            {
-                mode: 'bus',
-                icon: 'mdi-bus'
-            },
-            {
-                mode: 'none',
-                icon: 'mdi-hand'
-            }
-        ]" />
-    <NavigationSidePanel 
-        v-if="isNavigationPannelVisible"
-        @route-picked="navigationPicked"
-        @navigate-back="closeNavigationPannel" />
-    <RouteVisualiserSidePannel v-if="isRouteVisualiserVisible" @routes-selected="routesPicked"/>
-    <TransportMap 
-        :mode="mapMode" 
-        :navigation="navigation"
-        :routes="routes"
-        @map-clicked="mapClicked" />
+    <MapTools v-model:currentMode="mapMode" default-mode="none" :modes="[
+        {
+            mode: 'nav',
+            icon: 'mdi-navigation'
+        },
+        {
+            mode: 'bus',
+            icon: 'mdi-bus'
+        },
+        {
+            mode: 'none',
+            icon: 'mdi-hand'
+        }
+    ]" />
+    <NavigationSidePanel v-if="isNavigationPannelVisible" @route-picked="navigationPicked"
+        @navigate-back="navigateBack" />
+    <RouteVisualiserSidePannel v-if="isRouteVisualiserVisible" @routes-selected="routesPicked"
+        @navigate-back="navigateBack" />
+    <TransportMap :mode="mapMode" :navigation="navigation" :routes="routes" @map-clicked="mapClicked" />
 </template>

@@ -163,7 +163,6 @@ export default {
                 if(!pattern) {
                     pattern = route.patterns.find((pattern) => pattern.direction == -1 || pattern.direction == 1);
                 }
-                console.log('For route', route.id, pattern);
                 this.lines.push({
                     id: i,
                     path: this.geoCodeToPoints(pattern.geometry),

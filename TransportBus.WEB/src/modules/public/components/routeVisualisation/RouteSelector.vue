@@ -21,6 +21,9 @@ export default {
     methods:
     {
         addRoute() {
+            if (!this.chosenRoute) {
+                return;
+            }
             this.$emit('addRoute', this.chosenRoute);
             this.chosenRoute = null;
         },
@@ -55,11 +58,11 @@ export default {
         </template>
     </v-autocomplete>
     <div class="gap-4 flex flex-row items-center justify-between">
+        <v-btn color="secondary" @click="addAllRoutes">
+            {{ $t('public.transportMap.routeVisualiser.addAll') }}
+        </v-btn>
         <v-btn color="primary" @click="addRoute">
             {{ $t('public.transportMap.routeVisualiser.addRoute') }}
-        </v-btn>
-        <v-btn color="primary" @click="addAllRoutes">
-            {{ $t('public.transportMap.routeVisualiser.addAll') }}
         </v-btn>
     </div>
 </template>

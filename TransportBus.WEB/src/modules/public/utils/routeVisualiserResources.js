@@ -10,6 +10,7 @@ const routeVisualiserBg = {
   routePicker: 'Избор на маршрут',
   addRoute: 'Добави маршрут',
   addAll: 'Добави всички',
+  routeVisualOptions: 'Опции на визуализация на маршрут',
 };
 
 const routeVisualiserEn = {
@@ -24,6 +25,7 @@ const routeVisualiserEn = {
   routePicker: 'Route picker',
   addRoute: 'Add route',
   addAll: 'Add all',
+  routeVisualOptions: 'Route visualisation options',
 };
 
 export default {
