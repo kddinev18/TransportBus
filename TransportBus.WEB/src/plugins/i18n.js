@@ -1,32 +1,32 @@
-import { createI18n } from 'vue-i18n';
-import authRes from '../core/utils/resources.js';
-import publicRes from '../modules/public/utils/resources.js';
+import { createI18n } from "vue-i18n";
+import authRes from "../core/utils/resources.js";
+import publicRes from "../modules/public/utils/resources.js";
 
 const commonResourcesBg = {
-  minutesShort: 'мин',
-}
+  minutesShort: "мин",
+  pickColor: "Избери цвят",
+};
 
 const commonResourcesEn = {
-  minutesShort: 'min',
-}
+  minutesShort: "min",
+  pickColor: "Pick color",
+};
 
 const i18n = createI18n({
-  locale: 'bg', // Default locale
-  fallbackLocale: 'en', // Fallback to 'en' if translation is missing
+  locale: "bg", // Default locale
+  fallbackLocale: "en", // Fallback to 'en' if translation is missing
   messages: {
-    en:
-    {
+    en: {
       validation: commonResourcesEn,
       auth: authRes.en,
-      public: publicRes.en
+      public: publicRes.en,
     },
-    bg:
-    {
+    bg: {
       common: commonResourcesBg,
       auth: authRes.bg,
-      public: publicRes.bg
-    }
-  }
+      public: publicRes.bg,
+    },
+  },
 });
 
 export default i18n;

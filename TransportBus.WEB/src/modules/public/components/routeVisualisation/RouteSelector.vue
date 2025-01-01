@@ -71,7 +71,7 @@ export default {
     <h1 class="text-2xl mb-4 mt-6 font-bold text-text">
         {{ $t(`public.transportMap.routeVisualiser.routePicker`) }}
     </h1>
-    <v-checkbox v-model="chooseAllRoutes" color="primary" :label="$t(`public.transportMap.routeVisualiser.chooseAllRouites`)"></v-checkbox>
+    <v-checkbox v-model="chooseAllRoutes" color="primary" :label="$t(`public.transportMap.routeVisualiser.chooseAllRoutes`)"></v-checkbox>
     <v-autocomplete v-model="chosenRoute" :items="routesStore.routes" clearable item-title="longName" item-value="id"
         :label="$t('public.transportMap.routeVisualiser.route')" :disabled="routeInputDisabled">
         <template v-slot:item="{ props, item }">

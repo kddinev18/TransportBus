@@ -32,6 +32,9 @@ export default {
         },
         getStopName(stopId) {
             return this.stopsStore.getStopById(stopId).name.split(' / ')[0];
+        },
+        optionsChanged(options) {
+            console.log(options);
         }
     },
     watch: {
@@ -63,11 +66,11 @@ export default {
             <div class="flex gap-4">
                 <v-btn class="col-span-1" density="comfortable" icon="mdi-arrow-left" @click="goBack"></v-btn>
                 <h1 class="text-3xl mb-6 font-bold text-primary">
-                    {{ $t('public.transportMap.routeVisualiser.v') }}
+                    {{ $t('public.transportMap.routeVisualiser.routeVisualiser') }}
                 </h1>
             </div>
             <RouteSelector></RouteSelector>
-            <RouteOptions></RouteOptions>
+            <RouteOptions @options-changed="optionsChanged"></RouteOptions>
         </div>
     </div>
 </template>
