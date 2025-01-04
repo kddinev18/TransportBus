@@ -79,25 +79,22 @@ export default {
 </script>
 
 <template>
-    <div class="absolute top-4 right-4 bottom-4 transform z-50 p-4 bg-white shadow-md rounded-lg w-1/3">
-        <div class="flex flex-col border rounded p-4 w-full h-full">
-            <div class="flex gap-4">
-                <v-btn class="col-span-1" density="comfortable" icon="mdi-arrow-left" @click="goBack"></v-btn>
-                <h1 class="text-3xl mb-6 font-bold text-primary">
-                    {{ $t('public.transportMap.routeVisualiser.routeVisualiser') }}
-                </h1>
-            </div>
-            <div>
-                <RouteSelector @add-route="addRoute" @add-all-routes="addAllRoutes" :routes="availableRoutes">
-                </RouteSelector>
-            </div>
-            <h1 class="text-2xl mb-4 mt-6 font-bold text-text" v-if="chosenRoutes.length > 0">
-                {{ $t(`public.transportMap.routeVisualiser.routeVisualOptions`) }}
-            </h1>
-            <div class="overflow-y-auto flex-grow">
-                <RouteOptions class="pr-4" v-for="route in chosenRoutes" :route="route" @update-route="updateGivenRoute"
-                    :key="`route-key-${route.id}`" @remove-route="removeRoute"></RouteOptions>
-            </div>
-        </div>
+
+    <div class="flex gap-4">
+        <v-btn class="col-span-1" density="comfortable" icon="mdi-arrow-left" @click="goBack"></v-btn>
+        <h1 class="text-3xl mb-6 font-bold text-primary">
+            {{ $t('public.transportMap.routeVisualiser.routeVisualiser') }}
+        </h1>
+    </div>
+    <div>
+        <RouteSelector @add-route="addRoute" @add-all-routes="addAllRoutes" :routes="availableRoutes">
+        </RouteSelector>
+    </div>
+    <h1 class="text-2xl mb-4 mt-6 font-bold text-text" v-if="chosenRoutes.length > 0">
+        {{ $t(`public.transportMap.routeVisualiser.routeVisualOptions`) }}
+    </h1>
+    <div class="overflow-y-auto flex-grow">
+        <RouteOptions class="pr-4" v-for="route in chosenRoutes" :route="route" @update-route="updateGivenRoute"
+            :key="`route-key-${route.id}`" @remove-route="removeRoute"></RouteOptions>
     </div>
 </template>

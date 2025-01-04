@@ -5,6 +5,10 @@ const authenticationResourcesBg = {
         password: 'Парола',
         rememberMe: 'Запомни ме',
         forgotPassword: 'Забравена парола',
+        settings: 'Настройки',
+        logOut: 'Изход',
+        administation: 'Администрация',
+        logOutSuccess: 'Успешен изход',
     },
 }
   
@@ -15,6 +19,10 @@ const authenticationResourcesEn = {
         password: 'Password',
         rememberMe: 'Remember me',
         forgotPassword: 'Forgot password',
+        settings: 'Settings',
+        logOut: 'Log out',
+        administation: 'Administration',
+        logOutSuccess: 'Log out success',
     },
 }
 

@@ -50,11 +50,6 @@ export default {
 </script>
 
 <template>
-    <div class="absolute top-4 right-4 bottom-4 transform z-50 p-4 bg-white shadow-md rounded-lg w-1/3">
-        <div class="flex flex-col border rounded p-4 w-full h-full">
-            <RoutePicker v-if="isNevigateChosen" :routes="routes" @routePicked="routePicked"
-                @navigate-back="exitRoutePicker" />
-            <PointPicker v-else @navigate="navigate" @navigate-back="exitPointPicker" />
-        </div>
-    </div>
+    <RoutePicker v-if="isNevigateChosen" :routes="routes" @routePicked="routePicked" @navigate-back="exitRoutePicker" />
+    <PointPicker v-else @navigate="navigate" @navigate-back="exitPointPicker" />
 </template>

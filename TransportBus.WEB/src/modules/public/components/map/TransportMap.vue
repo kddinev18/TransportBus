@@ -28,7 +28,7 @@ export default {
                 minZoom: 12,
                 maxZoom: 21,
                 zoom: 13,
-                center: { lat: 42.485444, lng: 27.448780 },
+                center: { lat: 42.500054, lng: 27.403582 },
                 bounds: {
                     latLngBounds:
                     {

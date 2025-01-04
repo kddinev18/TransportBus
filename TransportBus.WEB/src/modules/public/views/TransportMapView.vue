@@ -1,6 +1,7 @@
 <script>
 import TransportMap from '../components/map/TransportMap.vue'
 import AppLoader from '../../../core/components/AppLoader.vue';
+import ProfileAvatar from '../../../core/components/ProfileAvatar.vue';
 import { useStopsStore } from '../../../core/stores/stopsStore';
 import { useRoutesStore } from '../../../core/stores/routesStore';
 import NavigationSidePanel from '../components/navigation/NavigationSidePanel.vue';
@@ -14,7 +15,8 @@ export default {
         AppLoader,
         NavigationSidePanel,
         RouteVisualiserSidePannel,
-        MapTools
+        MapTools,
+        ProfileAvatar
     },
     data() {
         return {
@@ -38,6 +40,9 @@ export default {
         },
         isRouteVisualiserVisible() {
             return this.mapMode == 'bus';
+        },
+        isSidePannelVisible() {
+            return this.isNavigationPannelVisible || this.isRouteVisualiserVisible;
         }
     },
     methods:
@@ -94,6 +99,7 @@ export default {
 
 <template>
     <AppLoader :isLoading="isLoading" />
+    <ProfileAvatar />
     <MapTools v-model:currentMode="mapMode" default-mode="none" :modes="[
         {
             mode: 'nav',
@@ -108,9 +114,13 @@ export default {
             icon: 'mdi-hand'
         }
     ]" />
-    <NavigationSidePanel v-if="isNavigationPannelVisible" @route-picked="navigationPicked"
-        @navigate-back="navigateBack" />
-    <RouteVisualiserSidePannel v-if="isRouteVisualiserVisible" @routes-selected="routesPicked"
-        @navigate-back="navigateBack" />
+    <div class="absolute top-4 left-4 bottom-4 transform z-50 p-4 bg-white shadow-md rounded-lg w-1/3" v-if="isSidePannelVisible">
+        <div class="flex flex-col border rounded p-4 w-full h-full">
+            <NavigationSidePanel v-if="isNavigationPannelVisible" @route-picked="navigationPicked"
+                @navigate-back="navigateBack" />
+            <RouteVisualiserSidePannel v-if="isRouteVisualiserVisible" @routes-selected="routesPicked"
+                @navigate-back="navigateBack" />
+        </div>
+    </div>
     <TransportMap :mode="mapMode" :navigation="navigation" :routes="routes" @map-clicked="mapClicked" />
 </template>
