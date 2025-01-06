@@ -20,6 +20,9 @@ export default {
                 routeThickness: 4,
                 isVisible: true,
             },
+            routeColor: '',
+            stopsColor: '',
+
             optionConstraints:
             {
                 maxRouteThickness: 10,
@@ -37,9 +40,11 @@ export default {
             this.$emit('removeRoute', this.routeData.id);
         },
         routeColorSelected(color) {
+            this.routeColor = '#' +  color;
             this.routeData.routeColor = color;
         },
         stopsColorSelected(color) {
+            this.stopsColor = '#' +  color;
             this.routeData.stopsColor = color;
         }
     },
@@ -53,6 +58,8 @@ export default {
                 if (newValue) {
                     if (JSON.stringify(this.routeData) !== JSON.stringify(newValue)) {
                         this.routeData = { ...newValue };
+                        this.routeColor = '#' + this.routeData.routeColor;
+                        this.stopsColor = '#' + this.routeData.stopsColor;
                         console.log(this.routeData);
                     }
                 }
@@ -84,7 +91,7 @@ export default {
     </div>
     <div class="flex flex-col space-y-4">
         <div class="flex flex-row justify-between items-center">
-            <ColorPickerDialog :start-color="routeData.routeColor" @color-selected="routeColorSelected">
+            <ColorPickerDialog :start-color="routeColor" @color-selected="routeColorSelected">
                 <template v-slot:activator="{ activatorProps }">
                     <v-btn color="primary" v-bind="activatorProps">
                         <div class="flex flex-row items-center justify-between">
@@ -97,7 +104,7 @@ export default {
                 </template>
             </ColorPickerDialog>
 
-            <ColorPickerDialog :start-color="routeData.stopsColor" @color-selected="stopsolorSelected">
+            <ColorPickerDialog :start-color="stopsColor" @color-selected="stopsColorSelected">
                 <template v-slot:activator="{ activatorProps }">
                     <v-btn color="primary" v-bind="activatorProps">
                         <div class="flex flex-row items-center justify-between">

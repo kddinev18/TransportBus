@@ -22,7 +22,7 @@ export default {
         },
         optionsChosen(option) {
             if (option === 'administration') {
-                this.$router.push({ name: 'administration' });
+                this.$router.push({ name: 'admin' });
             } else if (option === 'settings') {
                 this.$router.push({ name: 'settings' });
             } else if (option === 'exit') {

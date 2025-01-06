@@ -6,10 +6,15 @@
         </RouterLink>
         <ul class="space-y-2 font-medium">
             <li>
-                <RouterLink to="logIn"
+                <RouterLink to="stops"
                     class="cursor-pointer flex items-center p-2 rounded-lg hover:bg-accent group">
                     <v-icon color="background" icon="mdi-map" size="large"></v-icon>
-                    <span class="ms-3 select-none">{{ $t('navigation.map') }}</span>
+                    <span class="ms-3 select-none">{{ $t('navigation.stops') }}</span>
+                </RouterLink>
+                <RouterLink to="routes"
+                    class="cursor-pointer flex items-center p-2 rounded-lg hover:bg-accent group">
+                    <v-icon color="background" icon="mdi-map" size="large"></v-icon>
+                    <span class="ms-3 select-none">{{ $t('navigation.routes') }}</span>
                 </RouterLink>
             </li>
         </ul>

@@ -2,28 +2,24 @@
 export default {
     data() {
         return {
-            color: ''
+            color: null
         }
     },
     props:
     {
-        startColor: 
-        {
-            type: String,
-            default: '#000000'
-        }
+        startColor: null
     },
     watch: {
         startColor: {
             handler(newValue) {
-                this.color = newValue;
+                this.color = newValue.toLowerCase();
                 console.log(this.color);
             },
         }
     },
     methods: {
         saveColor() {
-            this.$emit('colorSelected', this.color);
+            this.$emit('colorSelected', this.color.split('#')[1]);
         }
     },
     emits: ['colorSelected']
@@ -40,7 +36,7 @@ export default {
                 <v-divider class="mt-3"></v-divider>
 
                 <v-card-text class="px-4">
-                    <v-color-picker v-model="color" hide-inputs></v-color-picker>
+                    <v-color-picker v-model="color"></v-color-picker>
                 </v-card-text>
 
                 <v-divider></v-divider>
