@@ -1,6 +1,7 @@
 import { createI18n } from "vue-i18n";
 import authRes from "../core/utils/resources.js";
 import publicRes from "../modules/public/utils/resources.js";
+import adminRes from "../modules/administrative/utils/resources.js";
 
 const commonResourcesBg = {
   minutesShort: "мин",
@@ -20,11 +21,13 @@ const i18n = createI18n({
       validation: commonResourcesEn,
       auth: authRes.en,
       public: publicRes.en,
+      administrative: adminRes.en
     },
     bg: {
       common: commonResourcesBg,
       auth: authRes.bg,
       public: publicRes.bg,
+      administrative: adminRes.bg
     },
   },
 });

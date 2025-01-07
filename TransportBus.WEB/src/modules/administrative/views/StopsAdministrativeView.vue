@@ -1,7 +1,6 @@
 <script>
-
 </script>
 
 <template>
-    stops
+    routes
 </template>
