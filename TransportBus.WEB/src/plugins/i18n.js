@@ -6,11 +6,15 @@ import adminRes from "../modules/administrative/utils/resources.js";
 const commonResourcesBg = {
   minutesShort: "мин",
   pickColor: "Избери цвят",
+  ok: "ОК",
+  cancel: "Отказ",
 };
 
 const commonResourcesEn = {
   minutesShort: "min",
   pickColor: "Pick color",
+  ok: "OK",
+  cancel: "Cancel",
 };
 
 const i18n = createI18n({

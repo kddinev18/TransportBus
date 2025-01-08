@@ -19,6 +19,7 @@ export default {
                 code: '',
                 directions: 0,
                 stops: 0,
+                patterns: [],
             },
             defaultItem: {
                 id: -1,
@@ -26,8 +27,10 @@ export default {
                 code: '',
                 directions: 0,
                 stops: 0,
+                patterns: [],
             },
             mode: 'add',
+            formValidationTrigger: false,
         }
     },
 
@@ -65,6 +68,7 @@ export default {
                 code: route.shortName,
                 directions: route.patterns.length,
                 stops: route.patterns[0].stops.length,
+                patterns: route.patterns,
             }))
         },
 
@@ -81,6 +85,18 @@ export default {
             this.dialogDelete = true
         },
 
+        saveData(data) {
+            console.log(data);
+            if(data.isValid) {
+                if (this.mode == 'add') {
+                    this.routes.push(data.data)
+                } else {
+                    this.routes[this.editedIndex] = data.data
+                }
+                this.close()
+            }
+        },
+
         deleteItemConfirm() {
             this.routes.splice(this.editedIndex, 1)
             this.closeDelete()
@@ -92,6 +108,7 @@ export default {
                 this.editedItem = Object.assign({}, this.defaultItem)
                 this.editedIndex = -1
             })
+            this.mode = 'add'
         },
 
         closeDelete() {
@@ -103,7 +120,7 @@ export default {
         },
 
         save() {
-            this.close()
+            this.formValidationTrigger = !this.formValidationTrigger;
         },
     },
 }
@@ -130,7 +147,7 @@ export default {
 
                             <v-card-text>
                                 <v-container>
-                                    <RouteEdit :route="editedItem" :mode="mode" />
+                                    <RouteEdit :route="editedItem" :mode="mode" :trigger="formValidationTrigger" @validate="saveData" />
                                 </v-container>
                             </v-card-text>
 
@@ -140,12 +157,12 @@ export default {
                                     {{ $t('common.cancel') }}
                                 </v-btn>
                                 <v-btn color="blue-darken-1" variant="text" @click="save">
-                                    {{ $t('common.cancel') }}
+                                    {{ $t('common.save') }}
                                 </v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
-                    <v-dialog v-model="dialogDelete" max-width="500px">
+                    <v-dialog v-model="dialogDelete" max-width="700px">
                         <v-card>
                             <v-card-title class="text-h6">{{ $t('administrative.routes.deleteComfirmation')
                                 }}</v-card-title>
@@ -170,11 +187,9 @@ export default {
                 </v-icon>
             </template>
             <template v-slot:no-data>
-                <v-btn color="primary" @click="initialize">
-                    <h1 class="text-l text-text">
-                        {{ $t('administrative.stop.noStops') }}
-                    </h1>
-                </v-btn>
+                <h1 class="text-l text-text">
+                    {{ $t('administrative.stop.noStops') }}
+                </h1>
             </template>
         </v-data-table>
     </div>

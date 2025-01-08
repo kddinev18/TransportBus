@@ -16,7 +16,6 @@ export default {
             code: '',
             lines: [],
             stops: [],
-            currentRoute: null,
             currentPatterns: [],
         }
     },
@@ -34,10 +33,33 @@ export default {
             type: Object,
             required: false
         },
-        mode: String
+        mode: String,
+        trigger: Boolean
     },
+    watch: {
+        trigger() {
+            console.log('triggered');
+            this.validate();
+        }
+    },
+    emits: ['validate'],
     methods:
     {
+        async validate() {
+            const isValid = await this.v$.$validate();
+            this.$emit('validate', {
+                isValid: isValid,
+                data:
+                {
+                    id: this.route.id,
+                    name: this.name,
+                    code: this.code,
+                    patterns: this.currentPatterns,
+                    stops: this.currentPatterns.length > 0 ? this.currentPatterns[0].stops.length : 0,
+                    directions: this.currentPatterns.length
+                }
+            });
+        },
         geoCodeToPoints(path) {
             return decode(path).map((point) => {
                 return {
@@ -61,10 +83,9 @@ export default {
     },
     created() {
         if (this.route && this.route.id != -1) {
-            this.currentRoute = this.routesStore.getRouteById(this.route.id);
             this.name = this.route.name;
             this.code = this.route.code;
-            this.currentPatterns = this.currentRoute.patterns;
+            this.currentPatterns = this.route.patterns;
         }
     }
 }
@@ -75,8 +96,8 @@ export default {
         {{ $t('administrative.routes.routeData') }}
     </h1>
     <div class="flex flex-row gap-4 justify-between">
-        <v-text-field :label="$t('administrative.route.name')" v-model="name" />
-        <v-text-field :label="$t('administrative.route.code')" v-model.trim="code" @blur="v$.code.$touch"
+        <v-text-field :label="$t('administrative.routes.name')" v-model="name" />
+        <v-text-field :label="$t('administrative.routes.code')" v-model.trim="code" @blur="v$.code.$touch"
             @input="v$.code.$touch" :error-messages="v$.code.$errors.map(e => e.$message)" />
     </div>
     <div class="flex flex-row justify-between">
@@ -89,7 +110,7 @@ export default {
         <div class="border rounded p-4 mb-4">
             <div class="flex flex-row justify-between">
                 <h1 class="text-xl font-bold text-text text-center mt-1">
-                    {{ $t('administrative.stop.direction') }}: {{ pattern.direction }}
+                    {{ $t('administrative.stops.direction') }}: {{ pattern.direction }}
                 </h1>
                 <v-btn color="error" icon="mdi-delete" @click="deletePattern(pattern.index)" />
             </div>

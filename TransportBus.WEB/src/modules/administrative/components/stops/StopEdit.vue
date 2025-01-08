@@ -31,8 +31,16 @@ export default {
     },
     props: {
         stop: Object,
-        mode: String
+        mode: String,
+        trigger: Boolean
     },
+    watch: {
+        trigger() {
+            console.log('trigger');
+            this.validate();
+        }
+    },
+    emits: ['validate'],
     methods:
     {
         mapClicked(center) {
@@ -45,6 +53,20 @@ export default {
                 title: 'Stop'
             };
         },
+        async validate() {
+            const isValid = await this.v$.$validate();
+            this.$emit('validate', {
+                isValid: isValid,
+                data:
+                {
+                    id: this.stop.id,
+                    name: this.name,
+                    code: this.code,
+                    latitude: this.latitude,
+                    longitude: this.longitude
+                }
+            });
+        }
     },
     created() {
         if (this.stop && this.stop.id != -1) {
@@ -80,9 +102,9 @@ export default {
         <v-text-field :label="$t('administrative.stop.latitude')" v-model.trim="latitude" @blur="v$.latitude.$touch"
             @input="v$.latitude.$touch" :error-messages="v$.latitude.$errors.map(e => e.$message)" disabled />
         <v-text-field :label="$t('administrative.stop.longitude')" v-model.trim="longitude" @blur="v$.longitude.$touch"
-            @input="v$.longitude.$touch" :error-messages="v$.longitude.$errors.map(e => e.$message)" disabled/>
+            @input="v$.longitude.$touch" :error-messages="v$.longitude.$errors.map(e => e.$message)" disabled />
     </div>
     <div>
-        <AdministrativeMap @map-clicked="mapClicked" :marker-center="stopLocationMarker" class="h-72"/>
+        <AdministrativeMap @map-clicked="mapClicked" :marker-center="stopLocationMarker" class="h-72" />
     </div>
 </template>

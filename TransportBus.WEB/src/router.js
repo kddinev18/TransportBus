@@ -5,6 +5,7 @@ import TransportMapView from './modules/public/views/TransportMapView.vue'
 import AdministrativeMainView from './modules/administrative/views/AdministrativeMainView.vue'
 import StopsAdministrativeView from './modules/administrative/views/StopsAdministrativeView.vue'
 import RoutesAdministrativeView from './modules/administrative/views/RoutesAdministrativeView.vue'
+import UsersAdministrativeView from './modules/administrative/views/UsersAdministrativeView.vue'
 
 const routes = [
   { path: '/', redirect: '/home' },
@@ -13,6 +14,7 @@ const routes = [
     [
       { path: '/stops', component: StopsAdministrativeView, name: 'stops' },
       { path: '/routes', component: RoutesAdministrativeView, name: 'routes' },
+      { path: '/users', component: UsersAdministrativeView, name: 'users' },
     ]
   },
   { path: '/logIn', component: LogInView, name: 'logIn' },

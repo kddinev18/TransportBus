@@ -115,8 +115,8 @@ export default {
     </div>
     <div class="flex flex-row justify-between gap-4">
         <v-autocomplete v-model="selectedStop" :items="autocompleteStops" item-title="name" item-value="id"
-            :label="$t('administrative.stop.stop')" v-if="!chooseAllRoutes" />
-        <v-text-field :label="$t('administrative.stop.index')" v-model.trim="sequneceStop" />
+            :label="$t('administrative.stops.stop')" v-if="!chooseAllRoutes" />
+        <v-text-field :label="$t('administrative.stops.index')" v-model.trim="sequneceStop" />
         <v-btn color="primary" icon="mdi-plus" @click="addStop" />
     </div>
     <v-data-table :items="routeStopsData" :headers="headers" :sort-by="[{ key: 'index', order: 'asc' }]">
@@ -127,7 +127,7 @@ export default {
         </template>
         <template v-slot:no-data>
             <h1 class="text-l text-text">
-                {{ $t('administrative.stop.noStops') }}
+                {{ $t('administrative.stops.noStops') }}
             </h1>
         </template>
     </v-data-table>

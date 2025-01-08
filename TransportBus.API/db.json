@@ -3,8 +3,20 @@
     {
       "email": "admin@admin.com",
       "password": "$2a$10$mZLzIgaoL1ZKOiSmS8f2WufVNKVWXSZrPwKjcBdIFkZ6RlyiMKgSu",
-      "firstname": "Админ Админов",
+      "firstName": "Админ Админов",
       "id": 1
+    },
+    {
+      "email": "test@asd.asd",
+      "password": "$2a$10$UcvIkFKMVXME5SW43Cqrp.gC78K0yJnDfmwbo3S3D34WjRN1qH5b2",
+      "firstName": "test",
+      "id": 2
+    },
+    {
+      "email": "123@123.123",
+      "firstName": "123123",
+      "password": "$2a$10$XoCOjgHB4vK41.S5P2wn6OrWs37DVZbHpeG3JvD5gWRDkDfyKMiG6",
+      "id": 3
     }
   ],
   "stops": [
