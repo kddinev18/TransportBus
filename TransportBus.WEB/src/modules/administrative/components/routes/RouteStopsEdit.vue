@@ -1,5 +1,5 @@
 <script>
-import AdministrativeMap from '../AdministrativeMap.vue';
+import AdministrativeMap from '../common/AdministrativeMap.vue';
 import { decode } from '@mapbox/polyline';
 import { useRoutesStore } from '../../../../core/stores/routesStore';
 import { useStopsStore } from '../../../../core/stores/stopsStore';

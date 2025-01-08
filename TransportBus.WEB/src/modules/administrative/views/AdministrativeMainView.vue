@@ -1,9 +1,13 @@
 <script>
-import AdministrativeNavBar from '../components/AdministrativeNavBar.vue';
+import AdministrativeNavBar from '../components/common/AdministrativeNavBar.vue';
 export default{
     components:
     {
         AdministrativeNavBar
+    },
+    created()
+    {
+        this.$router.push({ name: 'stops' });
     }
 }
 </script>

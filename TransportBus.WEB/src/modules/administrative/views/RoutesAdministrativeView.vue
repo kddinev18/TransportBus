@@ -137,10 +137,10 @@ export default {
                             <v-card-actions>
                                 <v-spacer></v-spacer>
                                 <v-btn color="blue-darken-1" variant="text" @click="close">
-                                    Cancel
+                                    {{ $t('common.cancel') }}
                                 </v-btn>
                                 <v-btn color="blue-darken-1" variant="text" @click="save">
-                                    Save
+                                    {{ $t('common.cancel') }}
                                 </v-btn>
                             </v-card-actions>
                         </v-card>
@@ -171,7 +171,9 @@ export default {
             </template>
             <template v-slot:no-data>
                 <v-btn color="primary" @click="initialize">
-                    Reset
+                    <h1 class="text-l text-text">
+                        {{ $t('administrative.stop.noStops') }}
+                    </h1>
                 </v-btn>
             </template>
         </v-data-table>
