@@ -12,7 +12,6 @@ export default {
         return {
             routesStore: useRoutesStore(),
             stopsStore: useStopsStore(),
-            localPattern: {},
             lines: [],
             stops: [],
             routeStopsData: [],
@@ -26,7 +25,6 @@ export default {
         pattern: Object,
         color: String
     },
-    emits: ['update'],
     methods:
     {
         geoCodeToPoints(path) {
@@ -47,26 +45,21 @@ export default {
                 {
                     index: this.sequneceStop,
                     id: stopData.id,
-                    name: stopData.name
+                    name: stopData.name,
+                    lat: stopData.latitude,
+                    lon: stopData.longitude
                 },
                 ...this.routeStopsData.slice(this.sequneceStop - 1)
             ];
             for (let i = 0; i < this.routeStopsData.length; i++) {
                 this.routeStopsData[i].index = i + 1;
             }
-            this.localPattern.stops = this.routeStopsData.map((item) => item.id);
-            this.$emit('update', this.localPattern);
         },
         deleteStop(stop) {
             this.routeStopsData = this.routeStopsData.filter((item) => item.id !== stop.id);
             for (let i = 0; i < this.routeStopsData.length; i++) {
                 this.routeStopsData[i].index = i + 1;
             }
-            this.localPattern.stops = this.routeStopsData.map((item) => item.id);
-            this.$emit('update', this.localPattern);
-        },
-        loadPattern(updatedPath) {
-
         },
     },
     created() {
@@ -106,24 +99,18 @@ export default {
                 {
                     index: i + 1,
                     id: stopData.id,
-                    name: stopData.name
+                    name: stopData.name,
+                    lat: stopData.latitude,
+                    lon: stopData.longitude
                 }
             );
         }
     }
 }
-// https://maps.googleapis.com/maps/api/directions/json
-//   ?destination=Concord%2C%20MA
-//   &origin=Boston%2C%20MA
-//   &waypoints=via%3ACharlestown%2CMA%7Cvia%3ALexington%2CMA
-//   &key=YOUR_API_KEY
 </script>
 
 <template>
-    <h1 class="text-2xl mb-4 mt-6 font-bold text-text">
-        Direction: {{ pattern.direction }}
-    </h1>
-    <div>
+    <div class="h-96 mb-4 mt-4">
         <AdministrativeMap :lines="lines" :stops="stops" />
     </div>
     <div class="flex flex-row justify-between gap-4">
@@ -139,9 +126,9 @@ export default {
             </v-icon>
         </template>
         <template v-slot:no-data>
-            <v-btn color="primary" @click="initialize">
-                No stops
-            </v-btn>
+            <h1 class="text-l text-text">
+                {{ $t('administrative.stop.noStops') }}
+            </h1>
         </template>
     </v-data-table>
 </template>

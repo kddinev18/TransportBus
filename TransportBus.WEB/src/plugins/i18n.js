@@ -18,7 +18,7 @@ const i18n = createI18n({
   fallbackLocale: "en", // Fallback to 'en' if translation is missing
   messages: {
     en: {
-      validation: commonResourcesEn,
+      common: commonResourcesEn,
       auth: authRes.en,
       public: publicRes.en,
       administrative: adminRes.en

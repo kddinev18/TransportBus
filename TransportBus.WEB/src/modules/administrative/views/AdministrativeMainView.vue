@@ -14,7 +14,7 @@ export default{
             <AdministrativeNavBar />
         </div>
 
-        <div class="flex-1 bg-white">
+        <div class="flex-1 bg-white overflow-y-scroll">
             <RouterView />
         </div>
     </div>
