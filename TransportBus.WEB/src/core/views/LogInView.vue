@@ -40,12 +40,12 @@ export default {
 </script>
 
 <template>
-    <div class="absolute top-4 left-4 transform z-50">
+    <div class="animate-appear absolute top-4 left-4 transform z-50">
         <v-btn class="col-span-1" density="comfortable" icon="mdi-arrow-left" @click="goBack"></v-btn>
     </div>
     <div class="grid grid-cols-5 h-screen bg-background">
         <div class="bg-background col-span-2 flex flex-col justify-center items-center">
-            <div class="w-3/4 max-w-md">
+            <div class="animate-appear w-3/4 max-w-md">
                 <h1 class="text-3xl mb-6 font-bold text-primary">
                     {{ $t('auth.logIn.logIn') }}
                 </h1>

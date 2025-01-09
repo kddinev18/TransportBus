@@ -8,6 +8,7 @@ const commonResourcesBg = {
   pickColor: "Избери цвят",
   ok: "ОК",
   cancel: "Отказ",
+  save: "Запази",
 };
 
 const commonResourcesEn = {
@@ -15,6 +16,7 @@ const commonResourcesEn = {
   pickColor: "Pick color",
   ok: "OK",
   cancel: "Cancel",
+  save: "Save",
 };
 
 const i18n = createI18n({

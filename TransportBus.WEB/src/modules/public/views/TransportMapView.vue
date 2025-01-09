@@ -114,12 +114,12 @@ export default {
             icon: 'mdi-hand'
         }
     ]" />
-    <div class="absolute top-4 left-4 bottom-4 transform z-50 p-4 bg-white shadow-md rounded-lg w-1/3" v-if="isSidePannelVisible">
+    <div class="animate-appear absolute top-4 left-4 bottom-4 transform z-50 p-4 bg-white shadow-md rounded-lg w-1/3" v-if="isSidePannelVisible">
         <div class="flex flex-col border rounded p-4 w-full h-full">
             <NavigationSidePanel v-if="isNavigationPannelVisible" @route-picked="navigationPicked"
-                @navigate-back="navigateBack" />
+                @navigate-back="navigateBack"/>
             <RouteVisualiserSidePannel v-if="isRouteVisualiserVisible" @routes-selected="routesPicked"
-                @navigate-back="navigateBack" />
+                @navigate-back="navigateBack"/>
         </div>
     </div>
     <TransportMap :mode="mapMode" :navigation="navigation" :routes="routes" @map-clicked="mapClicked" />

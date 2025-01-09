@@ -14,6 +14,16 @@ module.exports = {
       'info': '#56c29b',         // Bright greenish-aqua for informational highlights
     },
     extend: {
+      keyframes: {
+        appear: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+
+      },
+      animation: {
+        appear: 'appear 0.25s ease-out',
+      },
     },
   },
   variants: {

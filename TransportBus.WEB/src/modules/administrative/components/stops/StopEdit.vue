@@ -90,21 +90,21 @@ export default {
         {{ $t('administrative.stops.stopData') }}
     </h1>
     <div class="flex flex-row gap-4 justify-between">
-        <v-text-field :label="$t('administrative.stop.name')" v-model.trim="name" @blur="v$.name.$touch"
+        <v-text-field :label="$t('administrative.stops.name')" v-model.trim="name" @blur="v$.name.$touch"
             @input="v$.name.$touch" :error-messages="v$.name.$errors.map(e => e.$message)" />
-        <v-text-field :label="$t('administrative.stop.code')" v-model.trim="code" @blur="v$.code.$touch"
+        <v-text-field :label="$t('administrative.stops.code')" v-model.trim="code" @blur="v$.code.$touch"
             @input="v$.code.$touch" :error-messages="v$.code.$errors.map(e => e.$message)" />
     </div>
     <h1 class="text-2xl mb-4 mt-6 font-bold text-text">
         {{ $t('administrative.stops.stopLocation') }}
     </h1>
     <div class="flex flex-row gap-4 justify-between">
-        <v-text-field :label="$t('administrative.stop.latitude')" v-model.trim="latitude" @blur="v$.latitude.$touch"
+        <v-text-field :label="$t('administrative.stops.latitude')" v-model.trim="latitude" @blur="v$.latitude.$touch"
             @input="v$.latitude.$touch" :error-messages="v$.latitude.$errors.map(e => e.$message)" disabled />
-        <v-text-field :label="$t('administrative.stop.longitude')" v-model.trim="longitude" @blur="v$.longitude.$touch"
+        <v-text-field :label="$t('administrative.stops.longitude')" v-model.trim="longitude" @blur="v$.longitude.$touch"
             @input="v$.longitude.$touch" :error-messages="v$.longitude.$errors.map(e => e.$message)" disabled />
     </div>
-    <div>
-        <AdministrativeMap @map-clicked="mapClicked" :marker-center="stopLocationMarker" class="h-72" />
+    <div class="h-72">
+        <AdministrativeMap @map-clicked="mapClicked" :marker-center="stopLocationMarker" />
     </div>
 </template>

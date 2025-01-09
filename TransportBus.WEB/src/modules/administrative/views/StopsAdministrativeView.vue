@@ -127,7 +127,7 @@ export default {
 </script>
 
 <template>
-    <div class="overflow-y-scroll">
+    <div class="animate-appear overflow-y-scroll">
         <v-data-table :headers="headers" :items="stops">
             <template v-slot:top>
                 <v-toolbar flat>

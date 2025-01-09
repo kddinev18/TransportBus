@@ -13,6 +13,8 @@ const stopsResourcesBg = {
   id: 'Идентификатор',
   noStops: 'Няма спирки',
   deleteComfirmation: 'Сигурни ли сте, че искате да изтриете спирката?',
+  latitude: 'Ширина',
+  longitude: 'Дължина',
 };
 
 const stopsResourcesEn = {
@@ -30,6 +32,8 @@ const stopsResourcesEn = {
   id: 'Id',
   noStops: 'No stops',
   deleteComfirmation: 'Are you sure you want to delete the stop?',
+  latitude: 'Latitude',
+  longitude: 'Longitude',
 };
 
 export default {
