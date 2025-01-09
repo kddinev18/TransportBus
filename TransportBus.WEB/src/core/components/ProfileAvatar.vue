@@ -5,14 +5,15 @@ export default {
             isDropdownVisible: false,
         };
     },
+    computed:
+    {
+        isAuthenticated() {
+            return localStorage.getItem('authToken') != null;
+        }
+    },
     methods: {
         toggleDropdown() {
-            if (!localStorage.getItem('authToken')) {
-                this.$router.push({ name: 'logIn' });
-            }
-            else {
-                this.isDropdownVisible = !this.isDropdownVisible;
-            }
+            this.isDropdownVisible = !this.isDropdownVisible;
         },
         handleOutsideClick(event) {
             const dropdown = this.$el;
@@ -24,7 +25,11 @@ export default {
             if (option === 'administration') {
                 this.$router.push({ name: 'admin' });
             } else if (option === 'settings') {
-                this.$router.push({ name: 'settings' });
+                if (this.$i18n.locale === 'bg') {
+                    this.$i18n.locale = 'en';
+                } else {
+                    this.$i18n.locale = 'bg';
+                }
             } else if (option === 'exit') {
                 this.$snackbar.add({
                     type: 'success',
@@ -32,6 +37,8 @@ export default {
                 });
                 localStorage.removeItem('authToken');
                 this.$router.push({ name: 'home' });
+            } else if (option === 'logIn') {
+                this.$router.push({ name: 'logIn' });
             }
             this.isDropdownVisible = !this.isDropdownVisible;
         }
@@ -53,7 +60,7 @@ export default {
         <div v-if="isDropdownVisible"
             class="absolute right-0 mt-6 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
             <ul class="py-1">
-                <button
+                <button v-if="isAuthenticated"
                     class="flex flex-row px-2 py-2 gap-4 text-sm text-gray-700 hover:bg-gray-100 w-full align-middle"
                     @click="optionsChosen('administration')">
                     <v-icon color="text" icon="mdi-security" size="large"></v-icon>
@@ -62,14 +69,20 @@ export default {
                 <button
                     class="flex flex-row px-2 py-2 gap-4 text-sm text-gray-700 hover:bg-gray-100 w-full align-middle"
                     @click="optionsChosen('settings')">
-                    <v-icon color="text" icon="mdi-cog" size="large"></v-icon>
-                    {{ $t('auth.logIn.settings') }}
+                    <v-icon color="text" icon="mdi-flag" size="large"></v-icon>
+                    {{ $t('auth.logIn.language') }}
                 </button>
-                <button
+                <button v-if="isAuthenticated"
                     class="flex flex-row px-2 py-2 gap-4 text-sm text-gray-700 hover:bg-gray-100 w-full align-middle"
                     @click="optionsChosen('exit')">
                     <v-icon color="text" icon="mdi-logout" size="large"></v-icon>
                     {{ $t('auth.logIn.logOut') }}
+                </button>
+                <button v-if="!isAuthenticated"
+                    class="flex flex-row px-2 py-2 gap-4 text-sm text-gray-700 hover:bg-gray-100 w-full align-middle"
+                    @click="optionsChosen('logIn')">
+                    <v-icon color="text" icon="mdi-login" size="large"></v-icon>
+                    {{ $t('auth.logIn.logIn') }}
                 </button>
             </ul>
         </div>

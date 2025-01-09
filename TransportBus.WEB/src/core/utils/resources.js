@@ -9,6 +9,7 @@ const authenticationResourcesBg = {
         logOut: 'Изход',
         administation: 'Администрация',
         logOutSuccess: 'Успешен изход',
+        language: 'Смяна на езика',
     },
 }
   
@@ -23,6 +24,7 @@ const authenticationResourcesEn = {
         logOut: 'Log out',
         administation: 'Administration',
         logOutSuccess: 'Log out success',
+        language: 'Change language',
     },
 }
 
